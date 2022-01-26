@@ -1,0 +1,5 @@
+handlers:
+- name: journal
+httpsEndpoint:
+  baseUrl: https://us-central1-fyp-actionsconsole.cloudfunctions.net/ActionsOnGoogleFulfillment
+  endpointApiVersion: 2

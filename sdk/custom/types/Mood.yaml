@@ -1,0 +1,19 @@
+synonym:
+  acceptUnknownValues: true
+  entities:
+    Awful:
+      synonyms:
+      - Awful
+    Bad:
+      synonyms:
+      - Bad
+    Excellent:
+      synonyms:
+      - Excellent
+    Good:
+      synonyms:
+      - Good
+    Ok:
+      synonyms:
+      - Ok
+  matchType: FUZZY_MATCH

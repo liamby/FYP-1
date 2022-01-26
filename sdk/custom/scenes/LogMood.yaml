@@ -1,0 +1,30 @@
+intentEvents:
+- handler:
+    staticPrompt:
+      candidates:
+      - promptResponse:
+          firstSimple:
+            variants:
+            - speech: OK, sure, no problem
+  intent: actions.intent.NO
+  transitionToScene: Journal
+- handler:
+    staticPrompt:
+      candidates:
+      - promptResponse:
+          firstSimple:
+            variants:
+            - speech: OK, Great
+  intent: actions.intent.YES
+  transitionToScene: MoodLogging
+onEnter:
+  staticPrompt:
+    candidates:
+    - promptResponse:
+        firstSimple:
+          variants:
+          - speech: Would you like to log your mood?
+        suggestions:
+        - title: "Yes"
+        - title: "No"
+  webhookHandler: journal

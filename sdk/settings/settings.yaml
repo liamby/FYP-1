@@ -1,0 +1,9 @@
+category: GAMES_AND_TRIVIA
+defaultLocale: en
+localizedSettings:
+  displayName: Alfred
+  pronunciation: Alfred
+  sampleInvocations:
+  - Talk to Alfred
+  voice: male_1
+projectId: fyp-actionsconsole

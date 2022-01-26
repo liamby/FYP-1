@@ -1,0 +1,17 @@
+conditionalEvents:
+- condition: scene.slots.status == "FINAL"
+  transitionToScene: actions.scene.END_CONVERSATION
+onEnter:
+  staticPrompt:
+    candidates:
+    - promptResponse:
+        firstSimple:
+          variants:
+          - speech: What did you get up to today?
+slots:
+- commitBehavior:
+    writeSessionParam: input
+  name: input
+  required: true
+  type:
+    name: userInput

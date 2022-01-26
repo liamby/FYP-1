@@ -1,0 +1,8 @@
+handler:
+  staticPrompt:
+    candidates:
+    - promptResponse:
+        firstSimple:
+          variants:
+          - speech: Welcome to your mood Journal. You can record your mood and keep track of trends, just by letting us know how you are feeling.
+transitionToScene: LogMood

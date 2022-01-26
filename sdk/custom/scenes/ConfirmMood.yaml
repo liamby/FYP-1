@@ -1,0 +1,29 @@
+intentEvents:
+- handler:
+    staticPrompt:
+      candidates:
+      - promptResponse:
+          firstSimple:
+            variants:
+            - speech: Okay, your mood has been logged
+  intent: actions.intent.YES
+  transitionToScene: Journal
+- handler:
+    staticPrompt:
+      candidates:
+      - promptResponse:
+          firstSimple:
+            variants:
+            - speech: Ok, lets try again.
+  intent: actions.intent.NO
+  transitionToScene: MoodLogging
+onEnter:
+  staticPrompt:
+    candidates:
+    - promptResponse:
+        firstSimple:
+          variants:
+          - speech: Is this correct?
+        suggestions:
+        - title: "Yes"
+        - title: "No"
