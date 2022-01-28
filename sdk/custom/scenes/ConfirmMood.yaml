@@ -21,6 +21,8 @@ onEnter:
   staticPrompt:
     candidates:
     - promptResponse:
+        canvas:
+          url: https://fyp-actionsconsole.firebaseapp.com/
         firstSimple:
           variants:
           - speech: Is this correct?
