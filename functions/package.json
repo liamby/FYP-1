@@ -9,7 +9,12 @@
   "main": "index.js",
   "dependencies": {
     "@assistant/conversation": "^3.0.0",
-    "firebase-admin": "^8.12.1",
+    "@firebase/app": "^0.7.15",
+    "firebase": "^9.6.5",
+    "firebase-admin": "^10.0.2",
     "firebase-functions": "^3.6.2"
+  },
+  "devDependencies": {
+    "firebase-app": "0.0.1"
   }
 }
