@@ -1,0 +1,14 @@
+conditionalEvents:
+- condition: user.verificationStatus != "VERIFIED"
+  handler:
+    staticPrompt:
+      candidates:
+      - promptResponse:
+          canvas:
+            url: https://fyp-actionsconsole.firebaseapp.com/
+          firstSimple:
+            variants:
+            - speech: You are not a verified user
+  transitionToScene: GuestFlow
+- condition: user.verificationStatus == "VERIFIED"
+  transitionToScene: AccountLinkingOrigin_AccountLinking

@@ -11,6 +11,7 @@ conditionalEvents:
           firstSimple:
             variants:
             - speech: Thanks for letting me know.
+    webhookHandler: saveJournalAndClassifyContent
   transitionToScene: Journal
 onEnter:
   staticPrompt:

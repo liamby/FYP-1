@@ -1,0 +1,41 @@
+conditionalEvents:
+- condition: session.params.AccountLinkingSlot == "LINKED"
+  handler:
+    staticPrompt:
+      candidates:
+      - promptResponse:
+          firstSimple:
+            variants:
+            - speech: Your account has been Linked!
+    webhookHandler: linkAccount
+  transitionToScene: LogMood
+- condition: session.params.AccountLinkingSlot == "ERROR"
+  handler:
+    staticPrompt:
+      candidates:
+      - promptResponse:
+          firstSimple:
+            variants:
+            - speech: Account linking cannot be completed because of system or network errors.
+  transitionToScene: AccountLinkingOrigin
+- condition: session.params.AccountLinkingSlot == "REJECTED"
+  handler:
+    staticPrompt:
+      candidates:
+      - promptResponse:
+          firstSimple:
+            variants:
+            - speech: Sorry, you cant proceed without an account.
+  transitionToScene: actions.scene.END_CONVERSATION
+slots:
+- commitBehavior:
+    writeSessionParam: AccountLinkingSlot
+  config:
+    '@type': type.googleapis.com/google.actions.conversation.v3.SignInSpec
+    opt_context: To remember what you say
+  defaultValue:
+    sessionParam: AccountLinkingSlot
+  name: AccountLinkingSlot
+  required: true
+  type:
+    name: actions.type.AccountLinking

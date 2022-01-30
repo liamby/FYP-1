@@ -29,4 +29,3 @@ onEnter:
         suggestions:
         - title: "Yes"
         - title: "No"
-  webhookHandler: journal

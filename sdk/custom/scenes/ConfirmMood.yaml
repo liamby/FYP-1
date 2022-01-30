@@ -1,11 +1,6 @@
 intentEvents:
 - handler:
-    staticPrompt:
-      candidates:
-      - promptResponse:
-          firstSimple:
-            variants:
-            - speech: Okay, your mood has been logged
+    webhookHandler: saveMood
   intent: actions.intent.YES
   transitionToScene: Journal
 - handler:

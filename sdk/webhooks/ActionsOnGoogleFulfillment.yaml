@@ -1,5 +1,7 @@
 handlers:
-- name: journal
+- name: saveJournalAndClassifyContent
+- name: saveMood
+- name: linkAccount
 httpsEndpoint:
   baseUrl: https://us-central1-fyp-actionsconsole.cloudfunctions.net/ActionsOnGoogleFulfillment
   endpointApiVersion: 2
