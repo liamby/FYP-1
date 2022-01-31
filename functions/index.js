@@ -71,25 +71,45 @@ app.handle('saveJournalAndClassifyContent', async conv => {
     uploadString(storageRef, journalEntry);
     conv.add('Okay, your journal entry has been recorded ');
 
-    //prepare path to storage
-    contentFilePath = email + "/" + date + "/content";
-    storageRef = ref(storage, contentFilePath);
+    // // Prepare path to storage
+    // contentFilePath = email + "/" + date + "/contentClassified";
+    // storageRef = ref(storage, contentFilePath);
 
     // Prepares a document, representing the provided text
     const document = {
         content: journalEntry,
         type: 'PLAIN_TEXT',
     };
-        
-    // Classifies text in the document
-    const [classification] = await client.classifyText({document});
-    console.log('******************* Categories: **********************');
-    let categoryString = "";
-    classification.categories.forEach(category => {
-        categoryString = `Name: ${category.name}, Confidence: ${category.confidence}`;
-        uploadString(storageRef, categoryString);
+
+    // // Classifies text in the document
+    // console.log("*********** Classify Content *************");
+    // const [classification] = await client.classifyText({document});
+    // let categoryString = "";
+    // classification.categories.forEach(category => {
+    //     console.log(category.name);
+    //     categoryString = categoryString + `Name: ${category.name}, Confidence: ${category.confidence}`;
+    // });
+    
+    // Prepare path to storage
+    contentFilePath = email + "/" + date + "/entities";
+    storageRef = ref(storage, contentFilePath);
+    
+    // Detects entities in the document
+    const [result] = await client.analyzeEntities({document});
+    const entities = result.entities;
+
+    console.log('Entities:');
+    let entitiesString = "";
+    entities.forEach(entity => {
+        console.log(entity);
+        entitiesString = entitiesString + ` - Type: ${entity.type}, Salience: ${entity.salience}`;
+        if (entity.metadata && entity.metadata.wikipedia_url) {
+            console.log(` - Wikipedia URL: ${entity.metadata.wikipedia_url}`);
+            entitiesString = entitiesString + ` - Wikipedia URL: ${entity.metadata.wikipedia_url}`;
+        }
     });
-    conv.add('and content classified');
+
+    uploadString(storageRef, entitiesString);
 
 });
 
