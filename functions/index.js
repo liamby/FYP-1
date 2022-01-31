@@ -2,6 +2,7 @@ const functions = require('firebase-functions');
 const { initializeApp } = require ('@firebase/app');
 const { getStorage, ref, uploadString } = require('@firebase/storage');
 const {conversation} = require('@assistant/conversation');
+const language = require('@google-cloud/language');
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -13,6 +14,7 @@ const firebaseConfig = {
     appId: "1:664121014324:web:a7271150439fc0b90ff261"
 };
 
+const client = new language.LanguageServiceClient();
 const firebaseApp = initializeApp(firebaseConfig);
 const storage = getStorage(firebaseApp);
 
@@ -50,26 +52,44 @@ app.handle('saveMood', (conv) => {
     let date = conv.user.lastSeenTime;
     let mood = conv.session.params.chosenMood;
 
-    let filePath = email + "/" + date + "/" + mood;
+    let filePath = email + "/" + date + "/mood";
     const storageRef = ref(storage, filePath);
     uploadString(storageRef, mood);
     
     conv.add('Okay, your mood has been logged as ' + mood);
 });
 
-app.handle('saveJournalAndClassifyContent', (conv) => {
+app.handle('saveJournalAndClassifyContent', async conv => {
     conv.overwrite = false;
     let email = conv.user.params.tokenPayload.email;
     let date = conv.user.lastSeenTime;
     let journalEntry = conv.session.params.input;
     let mood = conv.session.params.chosenMood;
 
-
-    let filePath = email + "/" + date + "/" + mood;
-    const storageRef = ref(storage, filePath);
+    let journalEntryFilePath = email + "/" + date + "/journalEntry";
+    let storageRef = ref(storage, journalEntryFilePath);
     uploadString(storageRef, journalEntry);
-    
     conv.add('Okay, your journal entry has been recorded ');
+
+    //prepare path to storage
+    contentFilePath = email + "/" + date + "/content";
+    storageRef = ref(storage, contentFilePath);
+
+    // Prepares a document, representing the provided text
+    const document = {
+        content: journalEntry,
+        type: 'PLAIN_TEXT',
+    };
+        
+    // Classifies text in the document
+    const [classification] = await client.classifyText({document});
+    console.log('******************* Categories: **********************');
+    let categoryString = "";
+    classification.categories.forEach(category => {
+        categoryString = `Name: ${category.name}, Confidence: ${category.confidence}`;
+        uploadString(storageRef, categoryString);
+    });
+    conv.add('and content classified');
 
 });
 
