@@ -49,7 +49,7 @@ app.handle('linkAccount', async conv => {
 app.handle('saveMood', (conv) => {
     conv.overwrite = false;
     let email = conv.user.params.tokenPayload.email;
-    let date = conv.user.lastSeenTime;
+    let date = conv.user.lastSeenTime.substr(0, 10);
     let mood = conv.session.params.chosenMood;
 
     let filePath = email + "/" + date + "/mood";
@@ -62,7 +62,7 @@ app.handle('saveMood', (conv) => {
 app.handle('saveJournalAndClassifyContent', async conv => {
     conv.overwrite = false;
     let email = conv.user.params.tokenPayload.email;
-    let date = conv.user.lastSeenTime;
+    let date = conv.user.lastSeenTime.substr(0, 10);
     let journalEntry = conv.session.params.input;
     let mood = conv.session.params.chosenMood;
 
@@ -102,7 +102,7 @@ app.handle('saveJournalAndClassifyContent', async conv => {
     let entitiesString = "";
     entities.forEach(entity => {
         console.log(entity);
-        entitiesString = entitiesString + ` - Type: ${entity.type}, Salience: ${entity.salience}`;
+        entitiesString = entitiesString + ` - Name: ${entity.name}, - Type: ${entity.type}, Salience: ${entity.salience}`;
         if (entity.metadata && entity.metadata.wikipedia_url) {
             console.log(` - Wikipedia URL: ${entity.metadata.wikipedia_url}`);
             entitiesString = entitiesString + ` - Wikipedia URL: ${entity.metadata.wikipedia_url}`;
