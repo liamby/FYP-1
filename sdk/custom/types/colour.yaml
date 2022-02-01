@@ -1,0 +1,33 @@
+synonym:
+  entities:
+    "1":
+      synonyms:
+      - "1"
+      - one
+      - first
+      - number one
+    "2":
+      synonyms:
+      - "2"
+      - two
+      - second
+      - number two
+    "3":
+      synonyms:
+      - "3"
+      - three
+      - third
+      - number three
+    "4":
+      synonyms:
+      - "4"
+      - four
+      - fourth
+      - number four
+    "5":
+      synonyms:
+      - "5"
+      - five
+      - fifth
+      - number five
+  matchType: EXACT_MATCH

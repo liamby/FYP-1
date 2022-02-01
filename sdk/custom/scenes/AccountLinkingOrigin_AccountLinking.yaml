@@ -1,14 +1,8 @@
 conditionalEvents:
 - condition: session.params.AccountLinkingSlot == "LINKED"
   handler:
-    staticPrompt:
-      candidates:
-      - promptResponse:
-          firstSimple:
-            variants:
-            - speech: Your account has been Linked!
     webhookHandler: linkAccount
-  transitionToScene: LogMood
+  transitionToScene: Onboarding
 - condition: session.params.AccountLinkingSlot == "ERROR"
   handler:
     staticPrompt:

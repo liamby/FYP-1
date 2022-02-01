@@ -1,0 +1,35 @@
+conditionalEvents:
+- condition: scene.slots.status == "FINAL"
+  handler:
+    staticPrompt:
+      candidates:
+      - promptResponse:
+          canvas:
+            url: https://fyp-actionsconsole.firebaseapp.com/
+          firstSimple:
+            variants:
+            - speech: Great choice $user.params.tokenPayload.given_name! Your homepage has been customized. Here you can log and browse your moods and their related factors. There will be more information on display here after a few days of talking to me.
+  transitionToScene: LogMood
+slots:
+- commitBehavior:
+    writeSessionParam: colourScheme
+  name: colourScheme
+  promptSettings:
+    initialPrompt:
+      staticPrompt:
+        candidates:
+        - promptResponse:
+            canvas:
+              url: https://fyp-actionsconsole.firebaseapp.com/
+            firstSimple:
+              variants:
+              - speech: Before we get started, what colour scheme would you like to choose?
+            suggestions:
+            - title: "1"
+            - title: "2"
+            - title: "3"
+            - title: "4"
+            - title: "5"
+  required: true
+  type:
+    name: colour

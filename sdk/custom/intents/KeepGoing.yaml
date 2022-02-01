@@ -1,0 +1,16 @@
+parameters:
+- name: mood1
+  type:
+    name: Mood
+trainingPhrases:
+- continue
+- start
+- "yes"
+- definitely
+- ($mood1 'ok' auto=true)
+- continue
+- sounds swell
+- I like the sound of that
+- sounds ($mood1 'good' auto=true)
+- sure
+- lets go

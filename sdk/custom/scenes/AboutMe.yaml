@@ -1,6 +1,6 @@
 intentEvents:
 - intent: KeepGoing
-  transitionToScene: AboutMe
+  transitionToScene: AccountLinkingOrigin
 onEnter:
   staticPrompt:
     candidates:
@@ -9,6 +9,6 @@ onEnter:
           url: https://fyp-actionsconsole.firebaseapp.com/
         firstSimple:
           variants:
-          - speech: Hi, Im Alfred. I was designed with the goal of helping people with their mental health by mood logging.
+          - speech: I am a friendly voice assistant that you can always talk to. Its never too much trouble for me, really, I dont have much else to do!
         suggestions:
-        - title: Sounds Good!
+        - title: Lets get started
