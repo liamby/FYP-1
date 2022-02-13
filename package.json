@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@firebase/app": "^0.7.15",
+    "@firebase/firestore": "^3.4.4",
     "firebase": "^9.6.5",
     "firebase-admin": "^10.0.2",
     "google-auth-library": "^6.1.3",

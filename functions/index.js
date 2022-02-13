@@ -1,22 +1,24 @@
 const functions = require('firebase-functions');
-const { initializeApp } = require ('@firebase/app');
+const { initializeApp } = require('@firebase/app');
 const { getStorage, ref, uploadString } = require('@firebase/storage');
-const {conversation} = require('@assistant/conversation');
+const { doc, setDoc, getFirestore } = require('@firebase/firestore');
+const { conversation } = require('@assistant/conversation');
 const language = require('@google-cloud/language');
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyDNQrLzFJ-HqR61MNUD5eC0ZJWSc9clZY4",
-    authDomain: "fyp-actionsconsole.firebaseapp.com",
-    projectId: "fyp-actionsconsole",
-    storageBucket: "fyp-actionsconsole.appspot.com",
-    messagingSenderId: "664121014324",
-    appId: "1:664121014324:web:a7271150439fc0b90ff261"
+  apiKey: "AIzaSyDNQrLzFJ-HqR61MNUD5eC0ZJWSc9clZY4",
+  authDomain: "fyp-actionsconsole.firebaseapp.com",
+  projectId: "fyp-actionsconsole",
+  storageBucket: "fyp-actionsconsole.appspot.com",
+  messagingSenderId: "664121014324",
+  appId: "1:664121014324:web:a7271150439fc0b90ff261"
 };
 
 const client = new language.LanguageServiceClient();
 const firebaseApp = initializeApp(firebaseConfig);
 const storage = getStorage(firebaseApp);
+const firestore = getFirestore();
 
 const app = conversation({
   // REPLACE THE PLACEHOLDER WITH THE CLIENT_ID OF YOUR ACTIONS PROJECT
@@ -29,7 +31,7 @@ const app = conversation({
 app.handle('linkAccount', async conv => {
   let payload = conv.headers.authorization;
   if (payload) {
-  // Get UID for Firebase auth user using the email of the user
+    // Get UID for Firebase auth user using the email of the user
     const email = payload.email;
     if (!conv.user.params.uid && email) {
       try {
@@ -40,77 +42,59 @@ app.handle('linkAccount', async conv => {
         }
         // If the user is not found, create a new Firebase auth user
         // using the email obtained from Google Assistant
-        conv.user.params.uid = (await auth.createUser({email})).uid;
+        conv.user.params.uid = (await auth.createUser({ email })).uid;
       }
     }
   }
 });
 
-app.handle('saveMood', (conv) => {
-    conv.overwrite = false;
-    let email = conv.user.params.tokenPayload.email;
-    let date = conv.user.lastSeenTime.substr(0, 10);
-    let mood = conv.session.params.chosenMood;
+app.handle('saveMood', async conv => {
+  conv.overwrite = false;
+  let email = conv.user.params.tokenPayload.email;
+  let date = conv.user.lastSeenTime.substr(0, 10);
+  let mood = conv.session.params.chosenMood;
 
-    let filePath = email + "/" + date + "/mood";
-    const storageRef = ref(storage, filePath);
-    uploadString(storageRef, mood);
-    
-    conv.add('Okay, your mood has been logged as ' + mood);
+  const userStorage = doc(firestore, email + '/' + date);
+
+  await setDoc(userStorage, { mood: mood }, { merge: true })
+    .then(() => {
+      console.log('mood has been written to the database');
+      conv.add('Okay, your mood has been logged as ' + mood);
+    })
+    .catch((error) => { console.log('I got an error! ${error}'); });
+
 });
 
 app.handle('saveJournalAndClassifyContent', async conv => {
-    conv.overwrite = false;
-    let email = conv.user.params.tokenPayload.email;
-    let date = conv.user.lastSeenTime.substr(0, 10);
-    let journalEntry = conv.session.params.input;
-    let mood = conv.session.params.chosenMood;
+  conv.overwrite = false;
+  let email = conv.user.params.tokenPayload.email;
+  let date = conv.user.lastSeenTime.substr(0, 10);
+  let journalEntry = conv.session.params.journalEntry;
 
-    let journalEntryFilePath = email + "/" + date + "/journalEntry";
-    let storageRef = ref(storage, journalEntryFilePath);
-    uploadString(storageRef, journalEntry);
-    conv.add('Okay, your journal entry has been recorded ');
+  // Initialise path to storage
+  const userStorage = doc(firestore, email + '/' + date);
 
-    // // Prepare path to storage
-    // contentFilePath = email + "/" + date + "/contentClassified";
-    // storageRef = ref(storage, contentFilePath);
+  //Set value of journalEntry
+  await setDoc(userStorage, { journalEntry: journalEntry }, { merge: true })
+    .then(() => {
+      console.log('journalEntry has been written to the database');
+      conv.add('Okay, your journal entry has been recorded ');
+    })
+    .catch((error) => { console.log('I got an error! ${error}'); });
 
-    // Prepares a document, representing the provided text
-    const document = {
-        content: journalEntry,
-        type: 'PLAIN_TEXT',
-    };
+  // Prepares a document, representing the provided text
+  const document = {
+    content: journalEntry,
+    type: 'PLAIN_TEXT',
+  };
 
-    // // Classifies text in the document
-    // console.log("*********** Classify Content *************");
-    // const [classification] = await client.classifyText({document});
-    // let categoryString = "";
-    // classification.categories.forEach(category => {
-    //     console.log(category.name);
-    //     categoryString = categoryString + `Name: ${category.name}, Confidence: ${category.confidence}`;
-    // });
-    
-    // Prepare path to storage
-    contentFilePath = email + "/" + date + "/entities";
-    storageRef = ref(storage, contentFilePath);
-    
-    // Detects entities in the document
-    const [result] = await client.analyzeEntities({document});
-    const entities = result.entities;
+  // Detects entities in the document
+  const [result] = await client.analyzeEntities({ document });
+  const entities = result.entities;
 
-    console.log('Entities:');
-    let entitiesString = "";
-    entities.forEach(entity => {
-        console.log(entity);
-        entitiesString = entitiesString + ` - Name: ${entity.name}, - Type: ${entity.type}, Salience: ${entity.salience}`;
-        if (entity.metadata && entity.metadata.wikipedia_url) {
-            console.log(` - Wikipedia URL: ${entity.metadata.wikipedia_url}`);
-            entitiesString = entitiesString + ` - Wikipedia URL: ${entity.metadata.wikipedia_url}`;
-        }
-    });
-
-    uploadString(storageRef, entitiesString);
-
+  await setDoc(userStorage, { entities: entities }, { merge: true })
+    .then(() => { console.log('This value has been written to the database'); })
+    .catch((error) => { console.log('I got an error! ${error}'); });
 });
 
 exports.ActionsOnGoogleFulfillment = functions.https.onRequest(app);
