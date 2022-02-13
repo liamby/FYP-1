@@ -3,7 +3,7 @@ handler:
     candidates:
     - promptResponse:
         canvas:
-          url: https://fyp-actionsconsole.firebaseapp.com/
+          url: https://be37-2a02-8084-60a0-9a00-e071-1e53-9bd0-24bf.ngrok.io/
         firstSimple:
           variants:
           - speech: Welcome to your mood Journal. You can record your mood and keep track of trends, just by letting us know how you are feeling.

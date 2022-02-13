@@ -22,7 +22,9 @@ onEnter:
     candidates:
     - promptResponse:
         canvas:
-          url: https://fyp-actionsconsole.firebaseapp.com/
+          data:
+          - scene: stats
+          url: https://be37-2a02-8084-60a0-9a00-e071-1e53-9bd0-24bf.ngrok.io/
         firstSimple:
           variants:
           - speech: Would you like to log your mood for today?

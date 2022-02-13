@@ -6,7 +6,7 @@ conditionalEvents:
       - promptResponse:
           canvas:
             data:
-            - input: $session.params.input.
+            - journalEntry: $session.params.input.
               mood: $session.params.chosenMood.
           firstSimple:
             variants:
@@ -18,14 +18,14 @@ onEnter:
     candidates:
     - promptResponse:
         canvas:
-          url: https://fyp-actionsconsole.firebaseapp.com/
+          url: https://be37-2a02-8084-60a0-9a00-e071-1e53-9bd0-24bf.ngrok.io/
         firstSimple:
           variants:
           - speech: What did you get up to today?
 slots:
 - commitBehavior:
-    writeSessionParam: input
-  name: input
+    writeSessionParam: journalEntry
+  name: journalEntry
   required: true
   type:
     name: userInput
