@@ -1,6 +1,5 @@
 const functions = require('firebase-functions');
 const { initializeApp } = require('@firebase/app');
-const { getStorage, ref, uploadString } = require('@firebase/storage');
 const { doc, setDoc, getFirestore } = require('@firebase/firestore');
 const { conversation, Canvas } = require('@assistant/conversation');
 const language = require('@google-cloud/language');
@@ -17,7 +16,6 @@ const firebaseConfig = {
 
 const client = new language.LanguageServiceClient();
 const firebaseApp = initializeApp(firebaseConfig);
-const storage = getStorage(firebaseApp);
 const firestore = getFirestore();
 
 const app = conversation({
@@ -51,10 +49,6 @@ app.handle('linkAccount', async conv => {
 //Sends viewmode to canvas or asks for prefernce then sends viewmode to canvas.  
 app.handle('getViewMode', async conv => {
 
-  //Make sure viewmode is undefined - delete later. 
-  conv.user.params.viewMode = undefined;
-  console.log('*** viewMode == undefined ?' + conv.user.params.viewMode);
-
   //If viewMode has been set go to mood logging. 
   if(conv.user.params.viewMode == "light" || conv.user.params.viewMode == "dark"){
     console.log('*** viewMode == light || dark *** ');
@@ -63,7 +57,7 @@ app.handle('getViewMode', async conv => {
         viewMode: conv.user.params.viewMode,
       },
     }));
-    conv.scene.next.name = "MoodLogging";
+    conv.scene.next.name = "LogMood";
 
   //If viewmode hasn't been set, ask the user.
   }else if(typeof conv.user.params.viewMode == 'undefined'){
@@ -89,7 +83,7 @@ app.handle('saveViewMode', async conv => {
       viewMode: conv.user.params.viewMode,
     },
   }));
-  conv.scene.next.name = "MoodLogging";
+  conv.scene.next.name = "LogMood";
 });
 
 app.handle('saveMood', async conv => {

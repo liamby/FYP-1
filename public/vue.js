@@ -69,6 +69,7 @@ var app = new Vue({
         },
 
         changeMode(viewMode) {
+            console.log("changing viewMode this.viewMode = "+this.viewMode+" new viewMode = "+viewMode);
             if (this.viewMode != viewMode) {
                 console.log("changing viewMode");
                 document.documentElement.classList.toggle('dark');
@@ -98,22 +99,27 @@ interactiveCanvas.ready({
 
             //Print state of data and vue app
             console.log("data = " + JSON.stringify(data, null, 2));
-            console.log("app = " + app);
+            console.log( app);
+            console.log( data[0].mood);
+            console.log( typeof(data[0].mood));
 
             //Call appropriate functions 
-            if (typeof data[0].name != 'undefined' && typeof data[0].given_name != 'undefined'
-                && typeof data[0].family_name != 'undefined' && typeof data[0].picture != 'undefined')
+            if (typeof(data[0].name) !== 'undefined' && typeof data[0].given_name != 'undefined'
+                && typeof(data[0].family_name) !== 'undefined' && typeof data[0].picture != 'undefined')
                 app.setUserDetails(data[0].name, data[0].given_name, data[0].family_name, data[0].picture);
 
-            if (typeof data[0].date != 'undefined') app.getDayData(data[0].date);
+            if (typeof(data[0].date) !== 'undefined') app.getDayData(data[0].date);
 
-            if (typeof data[0].viewMode != 'undefined') app.changeMode(data[0].viewMode);
+            if (typeof(data[0].scene) !== 'undefined') app.changeScene(data[0].scene);
 
-            if (typeof data[0].scene != 'undefined') app.changeScene(data[0].scene);
+            if (typeof(data[0].mood) !== 'undefined') app.mood = data[0].mood;
 
-            if (typeof data[0].mood != 'undefined') app.mood = data[0].mood;
-
-            if (typeof data[0].journalEntry != 'undefined') app.journalEntry = data[0].journalEntry;
+            if (typeof(data[0].journalEntry) !== 'undefined') app.journalEntry = data[0].journalEntry;
         }
+
+        if (data.length > 0) {
+            if (typeof(data[1].viewMode) !== 'undefined') app.changeMode(data[1].viewMode);
+        }
+        
     }
 });
