@@ -2,7 +2,7 @@ const functions = require('firebase-functions');
 const { initializeApp } = require('@firebase/app');
 const { getStorage, ref, uploadString } = require('@firebase/storage');
 const { doc, setDoc, getFirestore } = require('@firebase/firestore');
-const { conversation } = require('@assistant/conversation');
+const { conversation, Canvas } = require('@assistant/conversation');
 const language = require('@google-cloud/language');
 
 // Your web app's Firebase configuration
@@ -46,6 +46,50 @@ app.handle('linkAccount', async conv => {
       }
     }
   }
+});
+
+//Sends viewmode to canvas or asks for prefernce then sends viewmode to canvas.  
+app.handle('getViewMode', async conv => {
+
+  //Make sure viewmode is undefined - delete later. 
+  conv.user.params.viewMode = undefined;
+  console.log('*** viewMode == undefined ?' + conv.user.params.viewMode);
+
+  //If viewMode has been set go to mood logging. 
+  if(conv.user.params.viewMode == "light" || conv.user.params.viewMode == "dark"){
+    console.log('*** viewMode == light || dark *** ');
+    conv.add(new Canvas({
+      data: {
+        viewMode: conv.user.params.viewMode,
+      },
+    }));
+    conv.scene.next.name = "MoodLogging";
+
+  //If viewmode hasn't been set, ask the user.
+  }else if(typeof conv.user.params.viewMode == 'undefined'){
+    console.log('*** viewMode == undefined *** ');
+    conv.add("Before we get started, what colour scheme would you like to choose?");
+    conv.scene.next.name = "chooseViewMode";
+    
+  //If viewmode is invalid throw error
+  }else if(conv.user.params.viewMode != "light" && conv.user.params.viewMode != "dark"){
+    console.log('*** viewMode ERROR set to undefined');
+    conv.user.params.viewMode = undefined;
+  }  
+});
+
+//Sets user parameter viewmode (permanent) as the session paramenter viewmode (temporaray) 
+app.handle('saveViewMode', async conv => {
+  conv.overwrite = false;
+  console.log('saveViewMode called');
+  conv.user.params.viewMode = conv.session.params.viewMode;
+  conv.add("Great choice " + conv.user.params.tokenPayload.given_name + "! Your homepage has been customized. Here you can log and browse your moods and their related factors. There will be more information on display here after a few days of talking to me.");
+  conv.add(new Canvas({
+    data: {
+      viewMode: conv.user.params.viewMode,
+    },
+  }));
+  conv.scene.next.name = "MoodLogging";
 });
 
 app.handle('saveMood', async conv => {
