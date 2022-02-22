@@ -109,7 +109,7 @@ var app = new Vue({
         },
 
         changeMode(viewMode) {
-            console.log("changing viewMode this.viewMode = " + this.viewMode + " new viewMode = " + viewMode);
+            console.log("changing viewMode called with this.viewMode = " + this.viewMode + " new viewMode = " + viewMode);
             if (this.viewMode != viewMode) {
                 console.log("changing viewMode");
                 document.documentElement.classList.toggle('dark');
@@ -153,6 +153,9 @@ interactiveCanvas.ready({
             if (typeof (data[i].mood) !== 'undefined') app.mood = data[i].mood;
 
             if (typeof (data[i].journalEntry) !== 'undefined') app.journalEntry = data[i].journalEntry;
+
+            if (typeof(data[i].viewMode) !== 'undefined') app.changeMode(data[i].viewMode);
+            
         }
 
     }
