@@ -1,26 +1,55 @@
 /*
 VUE.JS
-
 This file contains the code for retrieving data from the backend 
 and the reactively changing the HTML in index.html file.
 */
 
-import { doc, onSnapshot, getFirestore } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js";
+//Set up firebase and firestore app
 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
+import { getFirestore, doc, onSnapshot, getDoc, getDocs, collection } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-firestore.js";
+const firebaseConfig = {
+    apiKey: "AIzaSyDNQrLzFJ-HqR61MNUD5eC0ZJWSc9clZY4",
+    authDomain: "fyp-actionsconsole.firebaseapp.com",
+    projectId: "fyp-actionsconsole",
+    storageBucket: "fyp-actionsconsole.appspot.com",
+    messagingSenderId: "664121014324",
+    appId: "1:664121014324:web:a7271150439fc0b90ff261"
+};
+const firebaseApp = initializeApp(firebaseConfig);
+const firestore = getFirestore();
+
+//Vue app
 var app = new Vue({
     el: '#app',
 
     data: {
+
+        //Colour data. 
+        Colours: {
+            excellent: "#fee4cb",
+            happy: "#e9e7fd",
+            ok: "#ffd3e2",
+            bad: "#c8f7dc",
+            Awfull: "#d5deff",
+            other: "#dbf6fd"
+        },
+
+        //session specific data
         scene: "moodJournal",
         activeIcon: 'moodJournal',
         calendarView: 'jsGridView',
         viewMode: 'light',
+        today: new Date(),
 
+        //user specific data
         name: "",
         given_name: "",
         family_name: "",
         picture: "",
+        email: "",
 
+        //day specific data
         mood: undefined,
         journalEntry: undefined,
         entities: undefined,
@@ -32,49 +61,59 @@ var app = new Vue({
     },
     methods: {
 
-        setUserDetails(userName, given_name, family_name, picture) {
-            console.log("setUserDetails called with :" + userName + " " + given_name + " " + family_name + " " + picture);
+        setUserDetails(userName, given_name, family_name, picture, email) {
+            console.log("setUserDetails called with :" + userName + " " + given_name + " " + family_name + " " + picture + " " + email);
             this.name = userName;
             this.given_name = given_name;
             this.family_name = family_name;
             this.picture = picture;
+            this.email = email;
         },
 
         getCalendarData() {
             console.log("getCalendarData called ");
         },
 
+        //takes in a date object and sets  
         getDayData(date) {
             console.log("getDayData called with: " + date);
-            const userStorage = doc(firestore, this.email + '/' + this.date);
-            let dateObj = new Date(date);
-            this.day = dateObj.toLocaleTimeString('en-us', { weekday: 'long' });
-            this.month = dateObj.toLocaleTimeString('en-us', { month: 'long' });
-            this.date = dateObj.toLocaleTimeString('en-us', { day: 'numeric' });
-            this.year = dateObj.toLocaleTimeString('en-us', { year: 'numeric' });
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const dateString = date.toLocaleDateString('en-us', options);
 
-            const unsub = onSnapshot(doc(userStorage), (doc) => {
+            //Set date data
+            this.day = date.toLocaleTimeString('en-us', { weekday: 'long' }).slice(0, -10);
+            this.month = date.toLocaleTimeString('en-us', { month: 'long' }).slice(0, -12);
+            this.date = date.toLocaleTimeString('en-us', { day: 'numeric' }).slice(0, -12);
+            this.year = date.toLocaleTimeString('en-us', { year: 'numeric' }).slice(0, -12);
+            console.log(" day: " + this.day + " month: " + this.month + " date: " + this.date + " year: " + this.year)
+
+            //Set user generated data
+            const docRef = doc(firestore, this.email, dateString);
+            const unsub = onSnapshot(docRef, (doc) => {
                 console.log("Current data: ", doc.data());
-                this.mood = doc.mood;
-                this.journalEntry = doc.journalEntry;
-                this.entities = doc.entities;
+                this.mood = doc.data().mood;
+                this.journalEntry = doc.data().journalEntry;
+                this.entities = doc.data().entities;
+                console.log("Current data: ", this.entities);
             });
 
         },
 
         changeScene(sceneParam) {
             console.log("changeScene called with: " + sceneParam);
+            if (sceneParam == "moodJournal") {
+                this.getDayData(new Date());
+            }
             this.scene = sceneParam;
             this.activeIcon = sceneParam;
         },
 
         changeMode(viewMode) {
-            console.log("changing viewMode this.viewMode = "+this.viewMode+" new viewMode = "+viewMode);
+            console.log("changing viewMode this.viewMode = " + this.viewMode + " new viewMode = " + viewMode);
             if (this.viewMode != viewMode) {
                 console.log("changing viewMode");
                 document.documentElement.classList.toggle('dark');
                 document.querySelector('.mode-switch').classList.toggle('active');
-                //Todo Save User view mode for next time. 
             }
         },
 
@@ -95,31 +134,26 @@ interactiveCanvas.ready({
     (new data is being sent to the front end). Call the appropriate functions in the vue app. */
     onUpdate(data) {
 
-        if (data.length > 0) {
+        //Print state of data and vue app
+        console.log("data = " + JSON.stringify(data, null, 2));
+        console.log(app);
 
-            //Print state of data and vue app
-            console.log("data = " + JSON.stringify(data, null, 2));
-            console.log( app);
-            console.log( data[0].mood);
-            console.log( typeof(data[0].mood));
+        //Check all indexes of data array passed in
+        for (let i = 0; i < data.length; i++) {
 
             //Call appropriate functions 
-            if (typeof(data[0].name) !== 'undefined' && typeof data[0].given_name != 'undefined'
-                && typeof(data[0].family_name) !== 'undefined' && typeof data[0].picture != 'undefined')
-                app.setUserDetails(data[0].name, data[0].given_name, data[0].family_name, data[0].picture);
+            if (typeof (data[i].name) !== 'undefined' && typeof data[i].given_name != 'undefined'
+                && typeof (data[i].family_name) !== 'undefined' && typeof data[i].picture != 'undefined' && typeof data[i].email != 'undefined')
+                app.setUserDetails(data[i].name, data[i].given_name, data[i].family_name, data[i].picture, data[i].email);
 
-            if (typeof(data[0].date) !== 'undefined') app.getDayData(data[0].date);
+            if (typeof (data[i].date) !== 'undefined') app.getDayData(data[i].date);
 
-            if (typeof(data[0].scene) !== 'undefined') app.changeScene(data[0].scene);
+            if (typeof (data[i].scene) !== 'undefined') app.changeScene(data[i].scene);
 
-            if (typeof(data[0].mood) !== 'undefined') app.mood = data[0].mood;
+            if (typeof (data[i].mood) !== 'undefined') app.mood = data[i].mood;
 
-            if (typeof(data[0].journalEntry) !== 'undefined') app.journalEntry = data[0].journalEntry;
+            if (typeof (data[i].journalEntry) !== 'undefined') app.journalEntry = data[i].journalEntry;
         }
 
-        if (data.length > 0) {
-            if (typeof(data[1].viewMode) !== 'undefined') app.changeMode(data[1].viewMode);
-        }
-        
     }
 });

@@ -27,13 +27,13 @@
             <polygon points="16 3 21 8 8 21 3 21 3 16 16 3"></polygon>
           </svg>
         </div>
-        <div v-on:click="changeScene('stats')" type="button" class="app-sidebar-link" :class="{ active: activeIcon == 'stats' }" >
+        <!--- <div v-on:click="changeScene('stats')" type="button" class="app-sidebar-link" :class="{ active: activeIcon == 'stats' }" >
           <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none"
             stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
             <defs></defs>
             <path d="M21.21 15.89A10 10 0 118 2.83M22 12A10 10 0 0012 2v10z"></path>
           </svg>
-        </div>
+        </div>--->
         <div v-on:click="changeScene('calendar')" type="button" class="app-sidebar-link" :class="{ active: activeIcon == 'calendar' }" >
           <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -90,10 +90,10 @@
           </div>
           <!--- TAGS --->
           <div class="project-box-wrapper" v-for="entity in entities">
-            <div class="project-box" style="background-color: #fee4cb;">
+            <div class="project-box" style="background-color: #34c471;">
               <div class="project-box-content-header">
                 <p class="box-content-header">
-                  {{entity.metadata.name}}</p>
+                  {{entity.name}}</p>
               </div>
             </div>
           </div>
@@ -250,6 +250,126 @@
           </div>
         </div>
       </div>
+      
+      <!-- <div class="projects-section" v-if="scene == 'calendar'">
+        <div class="projects-section-header">
+          <p>Calendar</p>
+        </div>
+        <div class="projects-section-line">
+          <div class="projects-status">
+            <div class="item-status">
+              <span class="status-number">45</span>
+              <span class="status-type">Good</span>
+            </div>
+            <div class="item-status">
+              <span class="status-number">24</span>
+              <span class="status-type">Ok</span>
+            </div>
+            <div class="item-status">
+              <span class="status-number">62</span>
+              <span class="status-type">Bad</span>
+            </div>
+          </div>
+          <div class="view-actions">
+            <button v-on:click="changeCalendarView('jsListView')" class="view-btn list-view" :class="{ active: calendarView == 'jsListView' }" title="List View">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-list">
+                <line x1="8" y1="6" x2="21" y2="6"></line>
+                <line x1="8" y1="12" x2="21" y2="12"></line>
+                <line x1="8" y1="18" x2="21" y2="18"></line>
+                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+              </svg>
+            </button>
+            <button v-on:click="changeCalendarView('jsGridView')" class="view-btn grid-view" :class="{ active: calendarView == 'jsGridView' }" title="Grid View">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-grid">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="project-boxes" :class="{ jsGridView: calendarView == 'jsGridView' }" :class="{ jsListView: calendarView == 'jsListView' }" id="CalendarDays">
+          <div class="project-box-wrapper">
+            <div class="project-box" style="background-color: #fee4cb;">
+              <div class="project-box-header">
+                <span>December 10, 2020</span>
+              </div>
+              <div class="project-box-footer">
+                <div class="days-left" style="color: #ff942e;">
+                  2 Days Left
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="project-box-wrapper">
+            <div class="project-box" style="background-color: #E9E7FD;">
+              <div class="project-box-header">
+                <span>December 10, 2020</span>
+              </div>
+              <div class="project-box-footer">
+                <div class="days-left" style="color: #4F3FF0;">
+                  2 Days Left
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="project-box-wrapper">
+            <div class="project-box" style="background-color: #dbf6fd;">
+              <div class="project-box-header">
+                <span>December 10, 2020</span>
+              </div>
+              <div class="project-box-footer">
+                <div class="days-left" style="color: #096c86;">
+                  2 Days Left
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="project-box-wrapper">
+            <div class="project-box" style="background-color: #ffd3e2">
+              <div class="project-box-header">
+                <span>December 10, 2020</span>
+              </div>
+              <div class="project-box-footer">
+                <div class="days-left" style="color: #df3670;">
+                  2 Days Left
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="project-box-wrapper">
+            <div class="project-box" style="background-color: #c8f7dc;">
+              <div class="project-box-header">
+                <span>December 10, 2020</span>
+              </div>
+              <div class="project-box-footer">
+                <div class="days-left" style="color: #34c471;">
+                  2 Days Left
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="project-box-wrapper">
+            <div class="project-box" style="background-color: #d5deff;">
+              <div class="project-box-header">
+                <span>December 10, 2020</span>
+              </div>
+              <div class="project-box-footer">
+                <div class="days-left" style="color: #4067f9;">
+                  2 Days Left
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
 
       <!--- SETTINGS PAGE --->
       <div class="projects-section" v-if="scene == 'settings'">

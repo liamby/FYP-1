@@ -24,8 +24,8 @@ const app = conversation({
   debug: true
 });
 
-// Invoked on successful completion of account linking flow, check if we need to
-// create a Firebase user.
+// Invoked on successful completion of account linking flow, 
+// check if we need to create a Firebase user.
 app.handle('linkAccount', async conv => {
   let payload = conv.headers.authorization;
   if (payload) {
@@ -55,6 +55,7 @@ app.handle('getViewMode', async conv => {
     conv.add(new Canvas({
       data: {
         viewMode: conv.user.params.viewMode,
+        scene: 'moodJournal'
       },
     }));
     conv.scene.next.name = "LogMood";
@@ -74,10 +75,12 @@ app.handle('getViewMode', async conv => {
 
 //Sets user parameter viewmode (permanent) as the session paramenter viewmode (temporaray) 
 app.handle('saveViewMode', async conv => {
-  conv.overwrite = false;
   console.log('saveViewMode called');
+  conv.overwrite = false;
   conv.user.params.viewMode = conv.session.params.viewMode;
-  conv.add("Great choice " + conv.user.params.tokenPayload.given_name + "! Your homepage has been customized. Here you can log and browse your moods and their related factors. There will be more information on display here after a few days of talking to me.");
+  conv.add("Great choice " + conv.user.params.tokenPayload.given_name + "! Your homepage has been customized. " +  
+            "Here you can log and browse your moods and their related factors. There will be more information " + 
+            "on display here after a few days of talking to me.");
   conv.add(new Canvas({
     data: {
       viewMode: conv.user.params.viewMode,
@@ -86,15 +89,21 @@ app.handle('saveViewMode', async conv => {
   conv.scene.next.name = "LogMood";
 });
 
+
+//Saves users Mood
 app.handle('saveMood', async conv => {
   conv.overwrite = false;
+
   let email = conv.user.params.tokenPayload.email;
-  let date = conv.user.lastSeenTime.substr(0, 10);
-  let mood = conv.session.params.chosenMood;
+  let mood = conv.session.params.chosenMood; 
 
-  const userStorage = doc(firestore, email + '/' + date);
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  let todaysDate = new Date();
+  const todaysDateString = todaysDate.toLocaleDateString('en-us', options);
 
-  await setDoc(userStorage, { mood: mood }, { merge: true })
+  const userStorage = doc(firestore, email + '/' + todaysDateString);
+
+  await setDoc(userStorage, { mood: mood, todaysDate: todaysDate }, { merge: true })
     .then(() => {
       console.log('mood has been written to the database');
       conv.add('Okay, your mood has been logged as ' + mood);
@@ -103,17 +112,22 @@ app.handle('saveMood', async conv => {
 
 });
 
+
+//Saves Journal Entry and Classifies Content
 app.handle('saveJournalAndClassifyContent', async conv => {
   conv.overwrite = false;
   let email = conv.user.params.tokenPayload.email;
-  let date = conv.user.lastSeenTime.substr(0, 10);
   let journalEntry = conv.session.params.journalEntry;
 
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  let todaysDate = new Date();
+  const todaysDateString = todaysDate.toLocaleDateString('en-us', options);
+
   // Initialise path to storage
-  const userStorage = doc(firestore, email + '/' + date);
+  const userStorage = doc(firestore, email + '/' + todaysDateString);
 
   //Set value of journalEntry
-  await setDoc(userStorage, { journalEntry: journalEntry }, { merge: true })
+  await setDoc(userStorage, { journalEntry: journalEntry, todaysDate: todaysDate  }, { merge: true })
     .then(() => {
       console.log('journalEntry has been written to the database');
       conv.add('Okay, your journal entry has been recorded ');
