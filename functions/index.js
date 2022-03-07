@@ -4,7 +4,6 @@ const { doc, setDoc, getFirestore } = require('@firebase/firestore');
 const { conversation, Canvas } = require('@assistant/conversation');
 const language = require('@google-cloud/language');
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyDNQrLzFJ-HqR61MNUD5eC0ZJWSc9clZY4",
   authDomain: "fyp-actionsconsole.firebaseapp.com",
@@ -14,18 +13,18 @@ const firebaseConfig = {
   appId: "1:664121014324:web:a7271150439fc0b90ff261"
 };
 
-const client = new language.LanguageServiceClient();
-const firebaseApp = initializeApp(firebaseConfig);
-const firestore = getFirestore();
-
 const app = conversation({
-  // REPLACE THE PLACEHOLDER WITH THE CLIENT_ID OF YOUR ACTIONS PROJECT
   clientId: "664121014324-k6i8kctuj0qrgkr79d0na1t0klbj6ltm.apps.googleusercontent.com",
   debug: true
 });
 
-// Invoked on successful completion of account linking flow, 
-// check if we need to create a Firebase user.
+const client = new language.LanguageServiceClient();
+const firebaseApp = initializeApp(firebaseConfig);
+const firestore = getFirestore();
+
+
+/* Invoked on successful completion of account linking flow, 
+   Check if we need to create a Firebase user.  */
 app.handle('linkAccount', async conv => {
   let payload = conv.headers.authorization;
   if (payload) {
@@ -38,13 +37,14 @@ app.handle('linkAccount', async conv => {
         if (e.code !== 'auth/user-not-found') {
           throw e;
         }
-        // If the user is not found, create a new Firebase auth user
-        // using the email obtained from Google Assistant
+        // If user is not found, create a new Firebase auth user
+        // Using the email obtained from Google Assistant. 
         conv.user.params.uid = (await auth.createUser({ email })).uid;
       }
     }
   }
 });
+
 
 //Sends viewmode to canvas or asks for prefernce then sends viewmode to canvas.  
 app.handle('getViewMode', async conv => {
@@ -72,6 +72,7 @@ app.handle('getViewMode', async conv => {
     conv.user.params.viewMode = undefined;
   }  
 });
+
 
 //Sets user parameter viewmode (permanent) as the session paramenter viewmode (temporaray) 
 app.handle('saveViewMode', async conv => {

@@ -64,8 +64,8 @@
       <!--- MOOD JOURNAL --->
       <div class="projects-section" v-if="scene == 'moodJournal'" >
         <div class="projects-section-header">
-          <p>{{day}}'s Mood Journal</p>
-          <p class="time">{{month}}, {{date}}</p>
+          <p>{{dayData.day}}'s Mood Journal</p>
+          <p class="time">{{dayData.month}}, {{dayData.date}}</p>
         </div>
         <div class="project-boxes jsGridView">
           <!--- GIF ROW --->
@@ -78,7 +78,7 @@
           <div class="project-box-wrapper">
             <div class="projects-section">
               <div class="project-box-content-header">
-                <p class="box-content-header">{{mood}}</p>
+                <p class="box-content-header">{{dayData.mood}}</p>
               </div>
             </div>
           </div>
@@ -89,7 +89,7 @@
             </div>
           </div>
           <!--- TAGS --->
-          <div class="project-box-wrapper" v-for="entity in entities">
+          <div class="project-box-wrapper" v-for="entity in dayData.entities">
             <div class="project-box" style="background-color: #34c471;">
               <div class="project-box-content-header">
                 <p class="box-content-header">
@@ -99,7 +99,7 @@
           </div>
         </div>
         <!--- JOURNAL ENTRY --->
-        <div class="messages-section" v-if="journalEntry != 'undefined'">
+        <div class="messages-section" v-if="dayData.journalEntry != 'undefined'">
           <div class="projects-section-header">
             <p>Journal Entry</p>
           </div>
@@ -112,10 +112,10 @@
                   <div class="name">{{given_name}}</div>
                 </div>
                 <p class="message-line">
-                  {{journalEntry}}
+                  {{dayData.journalEntry}}
                 </p>
                 <p class="message-line time">
-                  {{month}}, {{date}}
+                  {{dayData.month}}, {{dayData.date}}
                 </p>
               </div>
             </div>
@@ -176,81 +176,22 @@
           </div>
         </div>
         <div class="project-boxes" :class="{ jsGridView: calendarView == 'jsGridView' }" :class="{ jsListView: calendarView == 'jsListView' }" id="CalendarDays">
-          <div class="project-box-wrapper">
-            <div class="project-box" style="background-color: #fee4cb;">
+          <div class="project-box-wrapper" v-for="calendarDay in calendarData">
+            <div class="project-box" :style="{color: backgroundColours.happy}">
               <div class="project-box-header">
-                <span>December 10, 2020</span>
+                <span>{{calendarDay.month}} {{calendarDay.date}}, {{calendarDay.year}}</span>
               </div>
               <div class="project-box-footer">
-                <div class="days-left" style="color: #ff942e;">
-                  2 Days Left
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="project-box-wrapper">
-            <div class="project-box" style="background-color: #E9E7FD;">
-              <div class="project-box-header">
-                <span>December 10, 2020</span>
-              </div>
-              <div class="project-box-footer">
-                <div class="days-left" style="color: #4F3FF0;">
-                  2 Days Left
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="project-box-wrapper">
-            <div class="project-box" style="background-color: #dbf6fd;">
-              <div class="project-box-header">
-                <span>December 10, 2020</span>
-              </div>
-              <div class="project-box-footer">
-                <div class="days-left" style="color: #096c86;">
-                  2 Days Left
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="project-box-wrapper">
-            <div class="project-box" style="background-color: #ffd3e2">
-              <div class="project-box-header">
-                <span>December 10, 2020</span>
-              </div>
-              <div class="project-box-footer">
-                <div class="days-left" style="color: #df3670;">
-                  2 Days Left
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="project-box-wrapper">
-            <div class="project-box" style="background-color: #c8f7dc;">
-              <div class="project-box-header">
-                <span>December 10, 2020</span>
-              </div>
-              <div class="project-box-footer">
-                <div class="days-left" style="color: #34c471;">
-                  2 Days Left
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="project-box-wrapper">
-            <div class="project-box" style="background-color: #d5deff;">
-              <div class="project-box-header">
-                <span>December 10, 2020</span>
-              </div>
-              <div class="project-box-footer">
-                <div class="days-left" style="color: #4067f9;">
-                  2 Days Left
+                <div class="days-left" :style="{color: colours.happy}" v-for="entity in calendarDay.entities">
+                  {{entity.name}}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      
+
+
       <!-- <div class="projects-section" v-if="scene == 'calendar'">
         <div class="projects-section-header">
           <p>Calendar</p>
