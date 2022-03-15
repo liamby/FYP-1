@@ -63,13 +63,12 @@
 
     .app-container {
       width: 100%;
-      margin-top: 10%;
+      margin-top: 5%;
       display: flex;
       flex-direction: column;
-      height: 100%;
+      height: 85%;
       background-color: var(--app-container);
       transition: 0.2s;
-      max-width: 1800px;
     }
 
     .app-content {
@@ -255,7 +254,6 @@
       flex-shrink: 0;
       padding-bottom: 32px;
       background-color: var(--projects-section);
-      margin-left: 24px;
       flex: 1;
       width: 100%;
       border-radius: 30px;
@@ -308,7 +306,6 @@
     .message-header {
       display: flex;
       align-items: center;
-      justify-content: space-between;
       width: 100%;
     }
 
@@ -321,7 +318,7 @@
     }
 
     .message-content {
-      padding-left: 16px;
+      padding-left: 0px;
       width: 100%;
     }
 
@@ -356,8 +353,9 @@
 
     .message-line {
       font-size: 30px;
-      line-height: 35px;
-      margin: 8px 0;
+      line-height:50px;
+      font-weight: 800;
+      margin: 10px 0;
       color: var(--secondary-color);
       opacity: 0.7;
     }
@@ -442,7 +440,7 @@
 
     .project-box {
       --main-color-card: #dbf6fd;
-      border-radius: 30px;
+      border-radius: 20px;
       padding: 16px;
       background-color: var(--main-color-card);
     }
@@ -453,6 +451,7 @@
       justify-content: space-between;
       margin-bottom: 16px;
       color: var(--main-color);
+      font-weight: 900;
     }
 
     .project-box-header span {
@@ -523,6 +522,7 @@
       justify-content: flex-start;
       padding-top: 16px;
       position: relative;
+      flex-wrap: wrap;
     }
 
     .project-box-footer:after {
@@ -568,7 +568,7 @@
 
     .days-left {
       background-color: rgba(255, 255, 255, 0.6);
-      font-size: 30px;
+      font-size: 25px;
       border-radius: 20px;
       flex-shrink: 0;
       padding: 6px 16px;

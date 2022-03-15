@@ -67,17 +67,16 @@ var app = new Vue({
             mood: undefined,
             journalEntry: undefined,
             entities: [],
+            date: undefined,
             day: undefined,
             month: undefined,
-            date: undefined,
+            dateNumber: undefined,
             suffix: undefined,
             year: undefined
         },
 
         // CalendarData
-        calendarData: [],
-
-        headerHeightPx: 0
+        calendarData: []
 
     },
     methods: {
@@ -98,25 +97,35 @@ var app = new Vue({
             let arrSecondLastMember = arr[arr.length - 2];
             let suffix = 'th';
 
-            if (arrLastMember == 1 && arrSecondLastMember.concat(arrLastMember) != "11") suffix = 'st';
-            if (arrLastMember == 2 && arrSecondLastMember.concat(arrLastMember) != "12") suffix = 'nd';
-            if (arrLastMember == 3 && arrSecondLastMember.concat(arrLastMember) != "13") suffix = 'rd';
+            console.log("arrLastMember: " + arrLastMember + "arrSecondLastMember: " + arrSecondLastMember);
+
+            if (typeof arrSecondLastMember == 'undefined') {
+                if (arrLastMember == 1) suffix = 'st';
+                if (arrLastMember == 2) suffix = 'nd';
+                if (arrLastMember == 3) suffix = 'rd';
+            } else {
+                if (arrLastMember == 1 && arrSecondLastMember.concat(arrLastMember) != "11") suffix = 'st';
+                if (arrLastMember == 2 && arrSecondLastMember.concat(arrLastMember) != "12") suffix = 'nd';
+                if (arrLastMember == 3 && arrSecondLastMember.concat(arrLastMember) != "13") suffix = 'rd';
+            }
 
             return suffix;
         },
 
         // Takes in a date object and sets. 
         getDayData(date) {
-
+            console.log("date" + date);
             // Set date data.
+            this.dayData.date = date
             this.dayData.day = days[date.getDay()];
             this.dayData.month = months[date.getMonth()];
-            this.dayData.date = date.getDate();
-            this.dayData.suffix = this.addOrdinalSuffix(this.dayData.date)
+            this.dayData.dateNumber = date.getDate();
+            console.log("this.dayData.date" + this.dayData.dateNumber);
+            this.dayData.suffix = this.addOrdinalSuffix(this.dayData.dateNumber)
             this.dayData.year = date.getFullYear();
 
             // Create path to firestore.
-            let dateString = (this.dayData.month + " " + this.dayData.date + ", " + this.dayData.year);
+            let dateString = (this.dayData.month + " " + this.dayData.dateNumber + ", " + this.dayData.year);
             let docRef = doc(firestore, this.email, dateString);
 
             // Set user generated data.
@@ -134,7 +143,7 @@ var app = new Vue({
                 console.log("Snapshot ended with: mood = ", this.dayData.mood,
                     " journalEntry = ", this.dayData.journalEntry,
                     " entities = ", this.dayData.entities);
-                    this.highlight();
+                this.highlight();
             })
         },
 
@@ -171,9 +180,10 @@ var app = new Vue({
                                 mood: mood,
                                 journalEntry: journalEntry,
                                 entities: entities,
+                                date: date,
                                 day: day,
                                 month: month,
-                                date: dateNumber,
+                                dateNumber: dateNumber,
                                 year: year
                             };
                             this.calendarData.push(dayObj);
@@ -190,10 +200,16 @@ var app = new Vue({
             is moodJournal or calendar set data of page. */
         changeScene(sceneParam) {
             console.log("changeScene called with: " + sceneParam);
-            if (sceneParam == "moodJournal") this.dayObj = this.getDayData(new Date());
+            if (sceneParam == "moodJournal") this.getDayData(new Date());
             if (sceneParam == "calendar") this.getCalendarData();
             this.scene = sceneParam;
             this.activeIcon = sceneParam;
+        },
+
+        showCalendarDay(date){
+            console.log("showCalendarDay called with: " + date);
+            this.getDayData(date);
+            this.scene = 'moodJournal';
         },
 
         // Toggle viewmode if parameter is different to current viewmode.
@@ -232,7 +248,8 @@ var app = new Vue({
                 let re = new RegExp(this.dayData.entities[entity].name, "g")
                 newText = newText.replace(re, `<mark>${this.dayData.entities[entity].name}</mark>`);
             }
-            document.getElementById("message-line").innerHTML = newText;
+            let message = document.getElementById("message-line");
+            message.innerHTML = newText;
         }
 
     }
@@ -295,16 +312,14 @@ interactiveCanvas.ready({
     //LISTENING IDLE PROCESSING
     onInputStatusChanged(inputStatus) {
         const iframe = document.getElementById("myIframe");
+        console.log(inputStatus);
         if (inputStatus == 'LISTENING') {
-            console.log("LISTENING");
             app.sendKeyDownToFrame('l');
         }
         if (inputStatus == 'IDLE') {
-            console.log("IDLE");
             app.sendKeyUpToFrame('l');
         }
         if (inputStatus == 'PROCESSING') {
-            console.log("PROCESSING");
         }
     },
 
