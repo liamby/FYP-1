@@ -22,6 +22,10 @@ const client = new language.LanguageServiceClient();
 const firebaseApp = initializeApp(firebaseConfig);
 const firestore = getFirestore();
 
+app.handle('wait', async conv => {
+  setTimeout(() => {console.log("Timeout")}, 3000);
+});
+
 
 /* Invoked on successful completion of account linking flow, 
    Check if we need to create a Firebase user.  */

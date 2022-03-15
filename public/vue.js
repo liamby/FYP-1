@@ -19,6 +19,11 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const firestore = getFirestore();
 
+const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+const months = ["January", "February", "March", "April", "May", "June", "July",
+    "August", "September", "October", "November", "December"];
+
 // Vue app
 var app = new Vue({
     el: '#app',
@@ -27,19 +32,20 @@ var app = new Vue({
 
         // Colour data. 
         colours: {
-            excellent: "#fee4cb",
-            happy: "#e9e7fd",
-            ok: "#ffd3e2",
-            bad: "#c8f7dc",
-            awfull: "#d5deff",
-            other: "#dbf6fd"
+            Excellent: "#c8f7dc", //green
+            Good: "#DBFDFB", //turkoise
+            Ok: "#d5deff", //lavender
+            Bad: "#e9e7fd", //purple
+            Awfull: "#fee4cb", //peach 
+            Other: "#ffd3e2" //pink 
         },
+
         backgroundColours: {
-            happy: "#4F3FF0",
-            other: "#096c86",
-            ok: "#df3670",
-            bad: "#34c471",
-            awfull: "#4067f9"
+            Excellent: "#34c471",//dark green 
+            Good: "#09867C", //dark turkoise 
+            Ok: "#001668",  //dark lavender
+            Bad: "#30296F", //dark purple
+            Awfull: "#df3670" // dark pink
         },
 
         // Session specific data..
@@ -60,13 +66,18 @@ var app = new Vue({
         dayData: {
             mood: undefined,
             journalEntry: undefined,
-            entities: undefined,
+            entities: [],
             day: undefined,
             month: undefined,
             date: undefined,
+            suffix: undefined,
             year: undefined
         },
-        calendarData: []
+
+        // CalendarData
+        calendarData: [],
+
+        headerHeightPx: 0
 
     },
     methods: {
@@ -81,48 +92,50 @@ var app = new Vue({
             this.email = email;
         },
 
+        addOrdinalSuffix(num) {
+            let arr = num.toString().split('');
+            let arrLastMember = arr[arr.length - 1];
+            let arrSecondLastMember = arr[arr.length - 2];
+            let suffix = 'th';
+
+            if (arrLastMember == 1 && arrSecondLastMember.concat(arrLastMember) != "11") suffix = 'st';
+            if (arrLastMember == 2 && arrSecondLastMember.concat(arrLastMember) != "12") suffix = 'nd';
+            if (arrLastMember == 3 && arrSecondLastMember.concat(arrLastMember) != "13") suffix = 'rd';
+
+            return suffix;
+        },
+
         // Takes in a date object and sets. 
-        async getDayData(date) {
+        getDayData(date) {
 
             // Set date data.
-            let day = date.toLocaleTimeString('en-us', { weekday: 'long' })
-            day = day.slice(0, day.length - 12);
-            let month = date.toLocaleTimeString('en-us', { month: 'long' });
-            month = month.slice(0, month.length - 13);
-            let dateNumber = date.toLocaleTimeString('en-us', { day: 'numeric' });
-            dateNumber = dateNumber.slice(0, dateNumber.length - 13);
-            let year = date.toLocaleTimeString('en-us', { year: 'numeric' });
-            year = year.slice(0, year.length - 13);
+            this.dayData.day = days[date.getDay()];
+            this.dayData.month = months[date.getMonth()];
+            this.dayData.date = date.getDate();
+            this.dayData.suffix = this.addOrdinalSuffix(this.dayData.date)
+            this.dayData.year = date.getFullYear();
 
             // Create path to firestore.
-            let dateString = (month + " " + dateNumber + ", " + year);
+            let dateString = (this.dayData.month + " " + this.dayData.date + ", " + this.dayData.year);
             let docRef = doc(firestore, this.email, dateString);
 
             // Set user generated data.
-            let mood = 'brello'; let journalEntry = 'fren'; let entities = 'blahh';
-            await onSnapshot(docRef, (doc) => {
+            this.dayData.mood = undefined;
+            this.dayData.journalEntry = undefined;
+            this.dayData.entities = undefined;
+
+            onSnapshot(docRef, (doc) => {
                 console.log(dateString + " data: ", JSON.stringify(doc.data(), null, 2));
                 if (typeof doc.data() != 'undefined') {
-                    if (typeof doc.data().mood != 'undefined') mood = doc.data().mood;
-                    if (typeof doc.data().journalEntry != 'undefined') journalEntry = doc.data().journalEntry;
-                    if (typeof doc.data().entities != 'undefined') entities = doc.data().entities;
+                    if (typeof doc.data().mood != 'undefined') this.dayData.mood = doc.data().mood;
+                    if (typeof doc.data().journalEntry != 'undefined') this.dayData.journalEntry = doc.data().journalEntry;
+                    if (typeof doc.data().entities != 'undefined') this.dayData.entities = doc.data().entities;
                 }
-                console.log("Snapshot ended with: mood = ", mood, " journalEntry = ", journalEntry, "entities = ", entities);
+                console.log("Snapshot ended with: mood = ", this.dayData.mood,
+                    " journalEntry = ", this.dayData.journalEntry,
+                    " entities = ", this.dayData.entities);
+                    this.highlight();
             })
-
-            let dayObj = {
-                mood: mood,
-                journalEntry: journalEntry,
-                entities: entities,
-                day: day,
-                month: month,
-                date: date,
-                year: year
-            };
-
-            console.log(JSON.stringify(dayObj, null, 2));
-            return dayObj;
-
         },
 
         /*  Initialises calendar data object with previous entries. 
@@ -136,20 +149,16 @@ var app = new Vue({
                     let date = new Date(data.id);
 
                     // Set date data.
-                    let day = date.toLocaleTimeString('en-us', { weekday: 'long' })
-                    day = day.slice(0, day.length - 12);
-                    let month = date.toLocaleTimeString('en-us', { month: 'long' });
-                    month = month.slice(0, month.length - 13);
-                    let dateNumber = date.toLocaleTimeString('en-us', { day: 'numeric' });
-                    dateNumber = dateNumber.slice(0, dateNumber.length - 13);
-                    let year = date.toLocaleTimeString('en-us', { year: 'numeric' });
-                    year = year.slice(0, year.length - 13);
+                    let day = days[date.getDay()];
+                    let month = months[date.getMonth()];
+                    let dateNumber = date.getDate();
+                    let year = date.getFullYear();
 
                     // Create path to firestore.
                     let dateString = (month + " " + dateNumber + ", " + year);
                     let docRef = doc(firestore, this.email, dateString);
-                    
-                    // Set user generated data.
+
+                    // Retrieve and set user generated data.
                     let mood; let journalEntry; let entities;
 
                     getDoc(docRef).then(docSnap => {
@@ -158,25 +167,21 @@ var app = new Vue({
                             if (typeof docSnap.data().mood != 'undefined') mood = docSnap.data().mood;
                             if (typeof docSnap.data().journalEntry != 'undefined') journalEntry = docSnap.data().journalEntry;
                             if (typeof docSnap.data().entities != 'undefined') entities = docSnap.data().entities;
-                            console.log("Snapshot ended with: mood = ", mood, " journalEntry = ", journalEntry, "entities = ", entities);
                             let dayObj = {
                                 mood: mood,
                                 journalEntry: journalEntry,
                                 entities: entities,
                                 day: day,
                                 month: month,
-                                date: date,
+                                date: dateNumber,
                                 year: year
                             };
-                            console.log("dayObj: " + JSON.stringify(dayObj, null, 2));
                             this.calendarData.push(dayObj);
+                            console.log("calendarData: " + this.calendarData);
                         } else {
                             console.log("No such document!");
                         }
                     });
-
-                    console.log("doc: " + data);
-                    console.log("calendarData: " + JSON.stringify(this.calendarData, null, 2));
                 });
             }
         },
@@ -204,6 +209,30 @@ var app = new Vue({
         changeCalendarView(calendarView) {
             console.log("changeCalendarView called");
             this.calendarView = calendarView;
+        },
+
+        // Sends Key down instruction to animation Iframe. 
+        sendKeyDownToFrame(key) {
+            console.log("sendKeyDownToFrame");
+            const iframe = document.getElementById("myIframe");
+            iframe.contentWindow.postMessage('keydown ' + key);
+        },
+
+        // Sends Key up instruction to animation IFrame. 
+        sendKeyUpToFrame(key) {
+            console.log("sendKeyUpToFrame");
+            const iframe = document.getElementById("myIframe");
+            iframe.contentWindow.postMessage('keyup ' + key);
+        },
+
+
+        highlight() {
+            let newText = this.dayData.journalEntry;
+            for (let entity in this.dayData.entities) {
+                let re = new RegExp(this.dayData.entities[entity].name, "g")
+                newText = newText.replace(re, `<mark>${this.dayData.entities[entity].name}</mark>`);
+            }
+            document.getElementById("message-line").innerHTML = newText;
         }
 
     }
@@ -228,8 +257,11 @@ interactiveCanvas.ready({
         for (let i = 0; i < data.length; i++) {
 
             // Call appropriate functions 
-            if (typeof (data[i].name) !== 'undefined' && typeof data[i].given_name != 'undefined'
-                && typeof (data[i].family_name) !== 'undefined' && typeof data[i].picture != 'undefined' && typeof data[i].email != 'undefined')
+            if (typeof (data[i].name) !== 'undefined'
+                && typeof data[i].given_name != 'undefined'
+                && typeof (data[i].family_name) !== 'undefined'
+                && typeof data[i].picture != 'undefined'
+                && typeof data[i].email != 'undefined')
                 app.setUserDetails(data[i].name, data[i].given_name, data[i].family_name, data[i].picture, data[i].email);
 
             if (typeof (data[i].scene) !== 'undefined') app.changeScene(data[i].scene);
@@ -242,5 +274,44 @@ interactiveCanvas.ready({
 
         }
 
-    }
+    },
+
+    //START, END, ERROR
+    onTtsMark(markName) {
+        const iframe = document.getElementById("myIframe");
+        if (markName == 'START') {
+            console.log("START");
+            app.sendKeyDownToFrame('s');
+        }
+        if (markName == 'END') {
+            console.log("END");
+            app.sendKeyUpToFrame('s');
+        }
+        if (markName == 'ERROR') {
+            console.log("ERROR");
+        }
+    },
+
+    //LISTENING IDLE PROCESSING
+    onInputStatusChanged(inputStatus) {
+        const iframe = document.getElementById("myIframe");
+        if (inputStatus == 'LISTENING') {
+            console.log("LISTENING");
+            app.sendKeyDownToFrame('l');
+        }
+        if (inputStatus == 'IDLE') {
+            console.log("IDLE");
+            app.sendKeyUpToFrame('l');
+        }
+        if (inputStatus == 'PROCESSING') {
+            console.log("PROCESSING");
+        }
+    },
+
 });
+
+interactiveCanvas.getHeaderHeightPx().then((height) => {
+    // initialize web app layout with header height value
+    console.log(height);
+    app.headerHeightPx = height
+})
