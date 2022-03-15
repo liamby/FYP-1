@@ -81,7 +81,7 @@
                 <div class="message-header" style="margin-top: 20px;">
                   <div class="name" style="margin-right: 10px;"> ~ </div>
                   <img v-bind:src="picture" alt="profile image">
-                  <div class="name" style="margin-right: 10px;"> {{given_name}}</div>
+                  <div class="name" style="margin-right: 5px;margin-left: 5px;"> {{given_name}}</div>
                   <p class="name">, {{dayData.month}} {{dayData.dateNumber}}{{dayData.suffix}}</p>
                 </div>
               </div>
@@ -98,10 +98,10 @@
         <div class="projects-section-line">
           <div class="projects-status">
             <div class="item-status">
-              <span class="status-number">45 Good, </span>
+              <span class="status-number">45 Good </span>
             </div>
             <div class="item-status">
-              <span class="status-number">24 Ok and </span>
+              <span class="status-number">24 Ok </span>
             </div>
             <div class="item-status">
               <span class="status-number">62 Bad</span>
@@ -138,17 +138,18 @@
           :class="{ jsListView: calendarView == 'jsListView' }" id="CalendarDays">
           <div class="project-box-wrapper"
             v-for="calendarDay in calendarData">
-            <div v-on:click="showCalendarDay(calendarDay.date)"class="project-box" :style="{backgroundColor: backgroundColours['dayData.mood']}">
+            <div v-on:click="showCalendarDay(calendarDay.date)" class="project-box" 
+            :style="{backgroundColor: colours[calendarDay.mood]}">
               <div class="project-box-header">
                 <span>{{calendarDay.month}} {{calendarDay.dateNumber}}, {{calendarDay.year}}</span>
               </div>
               <div class="project-box-footer">
                 <template v-for="(entity, index) in calendarDay.entities">
                   <div v-if="calendarView == 'jsListView'">
-                    <div class="days-left" :style="{color: colours['dayData.mood']}" v-if="index < 3">
+                    <div class="days-left" :style="{backgroundColours: colours[calendarDay.mood]}" v-if="index < 3">
                       {{entity.name}}
                     </div>
-                    <div class="days-left" :style="{color: colours['dayData.mood']}" v-if="index > 3  && index < 6">
+                    <div class="days-left" :style="{backgroundColours: colours[calendarDay.mood]}" v-if="index > 3  && index < 6">
                       {{entity.name}}
                     </div>
                   </div>
