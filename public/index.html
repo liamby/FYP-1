@@ -94,23 +94,10 @@
       <div class="projects-section" v-if="scene == 'calendar'">
         <div class="projects-section-header">
           <p>Calendar</p>
-        </div>
-        <div class="projects-section-line">
-          <div class="projects-status">
-            <div class="item-status">
-              <span class="status-number">45 Good </span>
-            </div>
-            <div class="item-status">
-              <span class="status-number">24 Ok </span>
-            </div>
-            <div class="item-status">
-              <span class="status-number">62 Bad</span>
-            </div>
-          </div>
           <div class="view-actions">
             <button v-on:click="changeCalendarView('jsListView')" class="view-btn list-view"
               :class="{ active: calendarView == 'jsListView' }" title="List View">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                 class="feather feather-list">
                 <line x1="8" y1="6" x2="21" y2="6"></line>
@@ -123,7 +110,7 @@
             </button>
             <button v-on:click="changeCalendarView('jsGridView')" class="view-btn grid-view"
               :class="{ active: calendarView == 'jsGridView' }" title="Grid View">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                 class="feather feather-grid">
                 <rect x="3" y="3" width="7" height="7"></rect>
@@ -133,6 +120,8 @@
               </svg>
             </button>
           </div>
+        </div>
+        <div class="projects-section-line">
         </div>
         <div class="project-boxes" :class="{ jsGridView: calendarView == 'jsGridView' }"
           :class="{ jsListView: calendarView == 'jsListView' }" id="CalendarDays">
