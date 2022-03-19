@@ -4,10 +4,10 @@ accountLinking:
 category: GAMES_AND_TRIVIA
 defaultLocale: en
 localizedSettings:
-  displayName: Alfred
-  pronunciation: Alfred
+  displayName: Final Year Project
+  pronunciation: Final Year Project
   sampleInvocations:
   - Talk to Alfred
-  voice: male_2
+  voice: male_3
 projectId: fyp-actionsconsole
 usesInteractiveCanvas: true

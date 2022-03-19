@@ -16,4 +16,5 @@ synonym:
     Ok:
       synonyms:
       - Ok
+      - Okay
   matchType: FUZZY_MATCH

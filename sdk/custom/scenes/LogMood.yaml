@@ -22,12 +22,12 @@ onEnter:
     candidates:
     - promptResponse:
         canvas:
-          data:
-          - scene: stats
-          url: https://be37-2a02-8084-60a0-9a00-e071-1e53-9bd0-24bf.ngrok.io/
+          continueTtsDuringTouch: true
+          enableFullScreen: true
+          url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
         firstSimple:
           variants:
-          - speech: Would you like to log your mood for today?
+          - speech: ' Hi $user.params.tokenPayload.given_name, you can record your mood and keep track of trends, just by letting me know how you are feeling. Would you like to log your mood for today?'
         suggestions:
         - title: "Yes"
         - title: "No"

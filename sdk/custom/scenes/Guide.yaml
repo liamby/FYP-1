@@ -6,7 +6,7 @@ onEnter:
     candidates:
     - promptResponse:
         canvas:
-          url: https://be37-2a02-8084-60a0-9a00-e071-1e53-9bd0-24bf.ngrok.io/
+          url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
         firstSimple:
           variants:
           - speech: You can also log your mood for the day and add a journal entry whenever you like. Welcome to your homepage. Here you can browse your moods and related factors after a few days of mood logging.

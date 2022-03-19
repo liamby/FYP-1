@@ -6,19 +6,19 @@ conditionalEvents:
       - promptResponse:
           canvas:
             data:
-            - journalEntry: $session.params.input.
-              mood: $session.params.chosenMood.
+            - journalEntry: $session.params.journalEntry
+              mood: $session.params.chosenMood
           firstSimple:
             variants:
             - speech: Thanks for letting me know.
     webhookHandler: saveJournalAndClassifyContent
-  transitionToScene: Journal
+  transitionToScene: actions.scene.END_CONVERSATION
 onEnter:
   staticPrompt:
     candidates:
     - promptResponse:
         canvas:
-          url: https://be37-2a02-8084-60a0-9a00-e071-1e53-9bd0-24bf.ngrok.io/
+          url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
         firstSimple:
           variants:
           - speech: What did you get up to today?

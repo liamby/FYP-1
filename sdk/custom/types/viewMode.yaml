@@ -1,0 +1,20 @@
+synonym:
+  acceptUnknownValues: true
+  entities:
+    dark:
+      synonyms:
+      - Dark
+      - night
+      - twilight
+      - black
+      - grey
+      - dim
+    light:
+      synonyms:
+      - Light
+      - Bright
+      - White
+      - Clear
+      - Day
+      - Sunny
+  matchType: EXACT_MATCH

@@ -1,8 +1,21 @@
 conditionalEvents:
 - condition: session.params.AccountLinkingSlot == "LINKED"
   handler:
+    staticPrompt:
+      candidates:
+      - promptResponse:
+          canvas:
+            continueTtsDuringTouch: true
+            data:
+            - email: $user.params.tokenPayload.email
+              family_name: $user.params.tokenPayload.family_name
+              given_name: $user.params.tokenPayload.given_name
+              name: $user.params.tokenPayload.name
+              picture: $user.params.tokenPayload.picture
+            enableFullScreen: true
+            url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
     webhookHandler: linkAccount
-  transitionToScene: Onboarding
+  transitionToScene: OnboardingOrigin
 - condition: session.params.AccountLinkingSlot == "ERROR"
   handler:
     staticPrompt:

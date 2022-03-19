@@ -4,11 +4,11 @@ conditionalEvents:
     staticPrompt:
       candidates:
       - promptResponse:
-          canvas:
-            url: https://be37-2a02-8084-60a0-9a00-e071-1e53-9bd0-24bf.ngrok.io/
           firstSimple:
             variants:
-            - speech: You are not a verified user
-  transitionToScene: GuestFlow
+            - speech: Hi, Im Alfred. I was designed to help people with their mental health by mood logging. You can record your mood and keep track of trends, just by letting me know how you are feeling. But first you must have a verified google account Come back when your account has been verified
+          suggestions:
+          - title: Okay
+  transitionToScene: actions.scene.END_CONVERSATION
 - condition: user.verificationStatus == "VERIFIED"
   transitionToScene: AccountLinkingOrigin_AccountLinking

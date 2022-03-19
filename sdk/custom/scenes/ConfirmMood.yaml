@@ -17,7 +17,7 @@ onEnter:
     candidates:
     - promptResponse:
         canvas:
-          url: https://be37-2a02-8084-60a0-9a00-e071-1e53-9bd0-24bf.ngrok.io/
+          url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
         firstSimple:
           variants:
           - speech: Is this correct?
