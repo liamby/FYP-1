@@ -53,20 +53,11 @@ app.handle('getViewMode', async conv => {
   if(conv.user.params.viewMode == "light" || conv.user.params.viewMode == "dark"){
     console.log('*** viewMode == light || dark *** ');
     conv.add(new Canvas({
-//      url: "https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/",
       data: {
-        // name: conv.user.params.tokenPayload.name,
-        // given_name: conv.user.params.tokenPayload.given_name,
-        // family_name: conv.user.params.tokenPayload.family_name,
-        // picture: conv.user.params.tokenPayload.picture,
-        // email: conv.user.params.tokenPayload.email,
         viewMode: conv.user.params.viewMode,
         scene: 'moodJournal'
       }
-      // enable_full_screen: true,
-      // continue_tts_during_touch: true
     }));
-    //conv.scene.next.name = "LogMood";
 
 
   //If viewmode hasn't been set, ask the user.

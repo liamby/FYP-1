@@ -169,10 +169,10 @@
     }
 
     .projects-section-header {
+      margin: 15px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 24px;
       color: var(--main-color);
     }
 
@@ -357,7 +357,7 @@
       font-weight: 800;
       margin: 10px 0;
       color: var(--secondary-color);
-      opacity: 0.7;
+      opacity: 0.9;
     }
 
     .message-line.time {

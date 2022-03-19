@@ -34,12 +34,12 @@ var app = new Vue({
 
         // Colour data. 
         colours: {
-            Excellent: "#c8f7dc", //green
-            Good: "#DBFDFB", //turkoise
+            Excellent: "#4de68f", //green
+            Good: "#3ef4e8", //turkoise
             Ok: "#d5deff", //lavender
-            Bad: "#e9e7fd", //purple
-            Awfull: "#fee4cb", //peach 
-            Other: "#ffd3e2" //pink 
+            Bad: "#335fff", //purple
+            Awfull: "#fb9637", //peach 
+            Other: "#ff3377" //pink 
         },
 
         backgroundColours: {
