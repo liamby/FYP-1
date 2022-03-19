@@ -5,7 +5,7 @@ and the reactively changing the HTML in index.html file.
 */
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
-import { getFirestore, doc, onSnapshot, getDoc, getDocs, collection } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-firestore.js";
+import { getFirestore, doc, onSnapshot, getDoc, getDocs, collection, orderBy, query } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDNQrLzFJ-HqR61MNUD5eC0ZJWSc9clZY4",
@@ -30,6 +30,8 @@ var app = new Vue({
 
     data: {
 
+        display: 'false',
+
         // Colour data. 
         colours: {
             Excellent: "#c8f7dc", //green
@@ -49,7 +51,7 @@ var app = new Vue({
         },
 
         // Session specific data..
-        scene: "moodJournal",
+        scene: "loading",
         activeIcon: 'moodJournal',
         calendarView: 'jsGridView',
         viewMode: 'light',
@@ -65,7 +67,7 @@ var app = new Vue({
         // Day specific data.
         dayData: {
             mood: undefined,
-            journalEntry: undefined,
+            journalEntry: "You haven't added a journal entry for today yet",
             entities: [],
             date: undefined,
             day: undefined,
@@ -76,7 +78,7 @@ var app = new Vue({
         },
 
         // CalendarData
-        calendarData: []
+        calendarData: [],
 
     },
     methods: {
@@ -153,7 +155,7 @@ var app = new Vue({
         async getCalendarData() {
             console.log("getCalendarData called with: " + this.email);
             if (this.calendarData.length == 0) {
-                const querySnapshot = await getDocs(collection(firestore, this.email));
+                const querySnapshot = await getDocs(query(collection(firestore, this.email), orderBy("todaysDate", "desc")));
                 querySnapshot.forEach((data) => {
                     let date = new Date(data.id);
 
@@ -204,6 +206,7 @@ var app = new Vue({
             if (sceneParam == "calendar") this.getCalendarData();
             this.scene = sceneParam;
             this.activeIcon = sceneParam;
+            //this.updateCanvasState();
         },
 
         showCalendarDay(date){
@@ -229,14 +232,14 @@ var app = new Vue({
 
         // Sends Key down instruction to animation Iframe. 
         sendKeyDownToFrame(key) {
-            console.log("sendKeyDownToFrame");
+            console.log("sendKeyDownToFrame ", key);
             const iframe = document.getElementById("myIframe");
             iframe.contentWindow.postMessage('keydown ' + key);
         },
 
         // Sends Key up instruction to animation IFrame. 
         sendKeyUpToFrame(key) {
-            console.log("sendKeyUpToFrame");
+            console.log("sendKeyUpToFrame ", key);
             const iframe = document.getElementById("myIframe");
             iframe.contentWindow.postMessage('keyup ' + key);
         },
@@ -250,9 +253,27 @@ var app = new Vue({
             }
             let message = document.getElementById("message-line");
             message.innerHTML = newText;
+        },
+        
+        loaded(){
+            console.log("LOADED CALLED");
+            //console.log(interactiveCanvas.triggerScene('LogMood'));
+            console.log(interactiveCanvas.sendTextQuery('LogMood'));
+            //document.getElementById("loader").style.display = "none";
         }
 
-    }
+        // // start conversation
+        // updateCanvasState() {
+        //     interactiveCanvas.setCanvasState({
+        //         display: this.display,
+        //         scene: this.scene
+        //     });
+        // }
+
+    },
+    // ready() {
+    //     this.loaded();
+    // }
 
 });
 
@@ -260,7 +281,7 @@ var app = new Vue({
 /* Code for passing data between the google action (the conversation) 
 and the front end. When the data object changes then the onUpdate 
 function gets called and changes the display depending on the data object.*/
-interactiveCanvas.ready({
+await interactiveCanvas.ready({
 
     /* When the contents of the data array passed to interactive canvas changes 
     (new data is being sent to the front end). Call the appropriate functions in the vue app. */
@@ -298,11 +319,13 @@ interactiveCanvas.ready({
         const iframe = document.getElementById("myIframe");
         if (markName == 'START') {
             console.log("START");
+            app.sendKeyUpToFrame('l');
             app.sendKeyDownToFrame('s');
         }
         if (markName == 'END') {
             console.log("END");
             app.sendKeyUpToFrame('s');
+            app.sendKeyDownToFrame('l');
         }
         if (markName == 'ERROR') {
             console.log("ERROR");
@@ -310,23 +333,19 @@ interactiveCanvas.ready({
     },
 
     //LISTENING IDLE PROCESSING
-    onInputStatusChanged(inputStatus) {
-        const iframe = document.getElementById("myIframe");
-        console.log(inputStatus);
-        if (inputStatus == 'LISTENING') {
-            app.sendKeyDownToFrame('l');
-        }
-        if (inputStatus == 'IDLE') {
-            app.sendKeyUpToFrame('l');
-        }
-        if (inputStatus == 'PROCESSING') {
-        }
-    },
+    // onInputStatusChanged(inputStatus) {
+    //     const iframe = document.getElementById("myIframe");
+    //     console.log(inputStatus);
+    //     if (inputStatus == 'LISTENING') {
+    //         app.sendKeyDownToFrame('l');
+    //     }
+    //     if (inputStatus == 'IDLE') {
+    //         app.sendKeyUpToFrame('l');
+    //     }
+    //     if (inputStatus == 'PROCESSING') {
+    //     }
+    // }
 
-});
-
-interactiveCanvas.getHeaderHeightPx().then((height) => {
-    // initialize web app layout with header height value
-    console.log(height);
-    app.headerHeightPx = height
 })
+
+app.loaded();;

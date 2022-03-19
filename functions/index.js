@@ -22,10 +22,6 @@ const client = new language.LanguageServiceClient();
 const firebaseApp = initializeApp(firebaseConfig);
 const firestore = getFirestore();
 
-// app.handle('wait', async conv => {
-//   setTimeout(() => {conv.scene.next.name = "logMood";}, 5000);
-// });
-
 
 /* Invoked on successful completion of account linking flow, 
    Check if we need to create a Firebase user.  */
@@ -57,12 +53,21 @@ app.handle('getViewMode', async conv => {
   if(conv.user.params.viewMode == "light" || conv.user.params.viewMode == "dark"){
     console.log('*** viewMode == light || dark *** ');
     conv.add(new Canvas({
+//      url: "https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/",
       data: {
+        // name: conv.user.params.tokenPayload.name,
+        // given_name: conv.user.params.tokenPayload.given_name,
+        // family_name: conv.user.params.tokenPayload.family_name,
+        // picture: conv.user.params.tokenPayload.picture,
+        // email: conv.user.params.tokenPayload.email,
         viewMode: conv.user.params.viewMode,
         scene: 'moodJournal'
-      },
+      }
+      // enable_full_screen: true,
+      // continue_tts_during_touch: true
     }));
-    conv.scene.next.name = "LogMood";
+    //conv.scene.next.name = "LogMood";
+
 
   //If viewmode hasn't been set, ask the user.
   }else if(typeof conv.user.params.viewMode == 'undefined'){
@@ -153,5 +158,6 @@ app.handle('saveJournalAndClassifyContent', async conv => {
     .then(() => { console.log('This value has been written to the database'); })
     .catch((error) => { console.log('I got an error! ${error}'); });
 });
+
 
 exports.ActionsOnGoogleFulfillment = functions.https.onRequest(app);
