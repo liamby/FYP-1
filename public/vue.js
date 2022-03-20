@@ -34,12 +34,12 @@ var app = new Vue({
 
         // Colour data. 
         colours: {
-            Excellent: "#4de68f", //green
-            Good: "#3ef4e8", //turkoise
-            Ok: "#d5deff", //lavender
-            Bad: "#335fff", //purple
-            Awfull: "#fb9637", //peach 
-            Other: "#ff3377" //pink 
+            Excellent: "#b3ffb3", //green
+            Good: "#66ffff", //turkoise
+            Ok: "#99ccff", //lavender
+            Bad: "#cc99ff", //peach 
+            Awfull: "#ff9999", //pink 
+            Other: "#335fff" //purple
         },
 
         backgroundColours: {
@@ -67,7 +67,7 @@ var app = new Vue({
         // Day specific data.
         dayData: {
             mood: undefined,
-            journalEntry: "You haven't added a journal entry for today yet",
+            journalEntry: undefined,
             entities: [],
             date: undefined,
             day: undefined,
@@ -319,13 +319,11 @@ await interactiveCanvas.ready({
         const iframe = document.getElementById("myIframe");
         if (markName == 'START') {
             console.log("START");
-            app.sendKeyUpToFrame('l');
             app.sendKeyDownToFrame('s');
         }
         if (markName == 'END') {
             console.log("END");
             app.sendKeyUpToFrame('s');
-            app.sendKeyDownToFrame('l');
         }
         if (markName == 'ERROR') {
             console.log("ERROR");
@@ -333,18 +331,18 @@ await interactiveCanvas.ready({
     },
 
     //LISTENING IDLE PROCESSING
-    // onInputStatusChanged(inputStatus) {
-    //     const iframe = document.getElementById("myIframe");
-    //     console.log(inputStatus);
-    //     if (inputStatus == 'LISTENING') {
-    //         app.sendKeyDownToFrame('l');
-    //     }
-    //     if (inputStatus == 'IDLE') {
-    //         app.sendKeyUpToFrame('l');
-    //     }
-    //     if (inputStatus == 'PROCESSING') {
-    //     }
-    // }
+    onInputStatusChanged(inputStatus) {
+        const iframe = document.getElementById("myIframe");
+        console.log(inputStatus);
+        if (inputStatus == 'LISTENING') {
+            app.sendKeyDownToFrame('l');
+        }
+        if (inputStatus == 'IDLE') {
+            app.sendKeyUpToFrame('l');
+        }
+        if (inputStatus == 'PROCESSING') {
+        }
+    }
 
 })
 

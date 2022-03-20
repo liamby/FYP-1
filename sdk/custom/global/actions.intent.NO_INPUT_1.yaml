@@ -5,3 +5,4 @@ handler:
         firstSimple:
           variants:
           - speech: Sorry, I didn't catch that. Can you try again?
+          - speech: Oh dear, I didn't hear what you said there, can you say it again please?

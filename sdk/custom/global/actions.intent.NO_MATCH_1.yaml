@@ -4,4 +4,5 @@ handler:
     - promptResponse:
         firstSimple:
           variants:
-          - speech: Sorry, I didn't catch that. Can you try again?
+          - speech: Sorry, I didn't understand that. Can you try again?
+          - speech: Oh dear, I didn't understand what you said there, can you say it again please?

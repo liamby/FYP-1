@@ -74,10 +74,10 @@
         <div class="projects-section-header">
           <p>{{dayData.day}}'s Mood Journal</p>
         </div>
-        <div class="projects-section-header" v-if="dayData.mood != 'undefined'">
+        <div class="projects-section-header" v-if="typeof dayData.mood != 'undefined'">
           <p>Mood : {{dayData.mood}} </p>
         </div>
-        <div class="messages-section" v-if="dayData.journalEntry != 'undefined'">
+        <div class="messages-section" v-if="typeof dayData.journalEntry != 'undefined'">
           <div class="messages">
             <div class="message-box">
               <div class="message-content">
@@ -125,14 +125,35 @@
             </button>
           </div>
         </div>
+        <div class="projects-status">
+          <div class="item-status">
+            <div class="box" style="background-Color: #b3ffb3"></div>
+            <span class="status-type">Excellent</span>
+          </div>
+          <div class="item-status">
+            <div class="box" style="background-Color: #66ffff"></div>
+            <span class="status-type">Good</span>
+          </div>
+          <div class="item-status">
+            <div class="box" style="background-Color: #99ccff" ></div>
+            <span class="status-type">Ok</span>
+          </div>
+          <div class="item-status">
+            <div class="box" style="background-Color: #cc99ff"></div>
+            <span class="status-type">Bad</span>
+          </div>
+          <div class="item-status">
+            <div class="box" style="background-Color: #ff9999"></div>
+            <span class="status-type">Awful</span>
+          </div>
+        </div>
         <div class="projects-section-line">
         </div>
         <div class="project-boxes" :class="{ jsGridView: calendarView == 'jsGridView' }"
           :class="{ jsListView: calendarView == 'jsListView' }" id="CalendarDays">
-          <div class="project-box-wrapper"
-            v-for="calendarDay in calendarData">
-            <div v-on:click="showCalendarDay(calendarDay.date)" class="project-box" 
-            :style="{backgroundColor: colours[calendarDay.mood]}">
+          <div class="project-box-wrapper" v-for="calendarDay in calendarData">
+            <div v-on:click="showCalendarDay(calendarDay.date)" class="project-box"
+              :style="{backgroundColor: colours[calendarDay.mood]}">
               <div class="project-box-header">
                 <span>{{calendarDay.month}} {{calendarDay.dateNumber}}, {{calendarDay.year}}</span>
               </div>
@@ -142,7 +163,8 @@
                     <div class="days-left" :style="{backgroundColours: colours[calendarDay.mood]}" v-if="index < 3">
                       {{entity.name}}
                     </div>
-                    <div class="days-left" :style="{backgroundColours: colours[calendarDay.mood]}" v-if="index > 3  && index < 6">
+                    <div class="days-left" :style="{backgroundColours: colours[calendarDay.mood]}"
+                      v-if="index > 3  && index < 6">
                       {{entity.name}}
                     </div>
                   </div>

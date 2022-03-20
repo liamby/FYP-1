@@ -107,7 +107,6 @@ app.handle('saveMood', async conv => {
   await setDoc(userStorage, { mood: mood, todaysDate: todaysDate }, { merge: true })
     .then(() => {
       console.log('mood has been written to the database');
-      conv.add('Okay, your mood has been logged as ' + mood);
     })
     .catch((error) => { console.log('I got an error! ${error}'); });
 

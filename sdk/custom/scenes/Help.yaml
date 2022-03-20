@@ -1,0 +1,10 @@
+onEnter:
+  staticPrompt:
+    candidates:
+    - promptResponse:
+        firstSimple:
+          variants:
+          - speech: 'Remember I am a friendly assistant designed to help you log your mood. If you''re not sure what to say try asking me to log your mood or add a journal entry for today. '
+        suggestions:
+        - title: Log my mood
+        - title: Add a journal entry

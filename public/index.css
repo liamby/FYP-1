@@ -195,20 +195,9 @@
 
     .item-status {
       display: flex;
-      flex-direction: column;
-      margin-right: 16px;
-    }
-
-    .item-status:not(:last-child) .status-type:after {
-      content: "";
-      position: absolute;
-      right: 8px;
-      top: 50%;
-      transform: translatey(-50%);
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      border: 1px solid var(--secondary-color);
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-content: center;
     }
 
     .status-number {
@@ -220,8 +209,9 @@
 
     .status-type {
       position: relative;
-      font-size: 30px;
-      padding-right: 24px;
+      font-size: 25px;
+      font-weight: 600;
+      padding-right: 15px;
       color: var(--secondary-color);
     }
 
@@ -511,6 +501,16 @@
       opacity: 0.7;
     }
 
+    .box {
+      float: left;
+      width: 20px;
+      height: 20px;
+      border: 1px solid rgba(0, 0, 0, .2);
+      align-self: center;
+      margin-right: 6px;
+
+    }
+
     .box-content-subheader {
       font-size: 30px;
       line-height: 40px;
@@ -523,16 +523,6 @@
       padding-top: 16px;
       position: relative;
       flex-wrap: wrap;
-    }
-
-    .project-box-footer:after {
-      content: "";
-      position: absolute;
-      background-color: rgba(255, 255, 255, 0.6);
-      width: calc(100% + 32px);
-      top: 0;
-      left: -16px;
-      height: 1px;
     }
 
     .participants {
