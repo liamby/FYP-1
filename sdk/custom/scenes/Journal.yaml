@@ -3,27 +3,43 @@ intentEvents:
     staticPrompt:
       candidates:
       - promptResponse:
+          canvas:
+            continueTtsDuringTouch: true
+            enableFullScreen: true
+            url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
           firstSimple:
             variants:
             - speech: Sure.
+            - speech: Okay.
   intent: actions.intent.YES
   transitionToScene: Journaling
 - handler:
     staticPrompt:
       candidates:
       - promptResponse:
+          canvas:
+            continueTtsDuringTouch: true
+            enableFullScreen: true
+            url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
           firstSimple:
             variants:
             - speech: No problem. Thats everything done for today see you again tomorrow.
+            - speech: Okay. That's everything done for today. Remember to check back in again tomorrow.
+            - speech: Okay. We're all done for today. Bye for now
   intent: actions.intent.NO
   transitionToScene: actions.scene.END_CONVERSATION
 onEnter:
   staticPrompt:
     candidates:
     - promptResponse:
+        canvas:
+          continueTtsDuringTouch: true
+          enableFullScreen: true
+          url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
         firstSimple:
           variants:
-          - speech: Would you like to add a journal entry for today
+          - speech: Would you like to add a journal entry for today?
+          - speech: Do you want to record a journal entry for today?
         suggestions:
-        - title: "Yes"
-        - title: "No"
+        - title: Let's do it!
+        - title: No, thank you

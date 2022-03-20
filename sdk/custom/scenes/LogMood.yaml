@@ -3,15 +3,25 @@ intentEvents:
     staticPrompt:
       candidates:
       - promptResponse:
+          canvas:
+            continueTtsDuringTouch: true
+            enableFullScreen: true
+            url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
           firstSimple:
             variants:
-            - speech: OK, sure, no problem
+            - speech: OK
+            - speech: Sure
+            - speech: No problem
   intent: actions.intent.NO
   transitionToScene: Journal
 - handler:
     staticPrompt:
       candidates:
       - promptResponse:
+          canvas:
+            continueTtsDuringTouch: true
+            enableFullScreen: true
+            url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
           firstSimple:
             variants:
             - speech: OK, Great
@@ -24,9 +34,14 @@ onEnter:
         canvas:
           continueTtsDuringTouch: true
           enableFullScreen: true
+          url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
         firstSimple:
           variants:
-          - speech: ' Hi $user.params.tokenPayload.given_name, you can record your mood and keep track of trends, just by letting me know how you are feeling. Would you like to log your mood for today?'
+          - speech: ' Hi $user.params.tokenPayload.given_name, you can record your mood and keep track of trends, just by letting me know how you are feeling.'
+        lastSimple:
+          variants:
+          - speech: Would you like to log your mood for today?
+          - speech: Would you like to record your mood for today?
         suggestions:
         - title: "Yes"
         - title: "No"

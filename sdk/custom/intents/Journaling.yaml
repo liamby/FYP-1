@@ -1,0 +1,21 @@
+parameters:
+- name: dateTime1
+  type:
+    name: actions.type.DateTime
+- name: viewMode1
+  type:
+    name: viewMode
+trainingPhrases:
+- I want to do  some journaling
+- journaling
+- journal
+- I want to journal
+- take down what i say about my ($viewMode1 'day' auto=true)
+- keep a record of my activities ($dateTime1 'today' auto=true)
+- log what I did ($dateTime1 'today' auto=true)
+- I want to take down what I did ($dateTime1 'today' auto=true)
+- I want to record my actions
+- I would like to tell you what I got up to ($dateTime1 'today' auto=true)
+- I would like to do some journaling
+- journaling
+- Journal

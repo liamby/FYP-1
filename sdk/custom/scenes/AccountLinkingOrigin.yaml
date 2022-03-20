@@ -4,9 +4,13 @@ conditionalEvents:
     staticPrompt:
       candidates:
       - promptResponse:
+          canvas:
+            continueTtsDuringTouch: true
+            enableFullScreen: true
+            url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
           firstSimple:
             variants:
-            - speech: Hi, Im Alfred. I was designed to help people with their mental health by mood logging. You can record your mood and keep track of trends, just by letting me know how you are feeling. But first you must have a verified google account Come back when your account has been verified
+            - speech: Hi, Im Alfred. I was designed to help people with their mental health by mood logging. You can record your mood and keep track of trends, just by letting me know how you are feeling. But first you must have a verified google account. Come back when your account has been verified
           suggestions:
           - title: Okay
   transitionToScene: actions.scene.END_CONVERSATION

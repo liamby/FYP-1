@@ -8,6 +8,6 @@ localizedSettings:
   pronunciation: Final Year Project
   sampleInvocations:
   - Talk to Alfred
-  voice: male_3
+  voice: male_1
 projectId: fyp-actionsconsole
 usesInteractiveCanvas: true

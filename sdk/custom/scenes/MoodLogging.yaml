@@ -1,16 +1,5 @@
 conditionalEvents:
 - condition: scene.slots.status == "FINAL"
-  handler:
-    staticPrompt:
-      candidates:
-      - promptResponse:
-          canvas:
-            data:
-            - input: $session.params.input.
-              mood: $session.params.chosenMood.
-          firstSimple:
-            variants:
-            - speech: I think you feel $session.params.chosenMood.
   transitionToScene: ConfirmMood
 slots:
 - commitBehavior:
@@ -21,9 +10,15 @@ slots:
       staticPrompt:
         candidates:
         - promptResponse:
+            canvas:
+              continueTtsDuringTouch: true
+              enableFullScreen: true
+              url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
             firstSimple:
               variants:
               - speech: How do you feel today?
+              - speech: How do you feel?
+              - speech: How would you describe your mood today?
             suggestions:
             - title: Good
             - title: Bad

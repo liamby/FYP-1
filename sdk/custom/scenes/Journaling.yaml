@@ -5,21 +5,36 @@ conditionalEvents:
       candidates:
       - promptResponse:
           canvas:
+            continueTtsDuringTouch: true
             data:
             - journalEntry: $session.params.journalEntry
               mood: $session.params.chosenMood
+            enableFullScreen: true
+            url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
           firstSimple:
             variants:
-            - speech: Thanks for letting me know.
+            - speech: Thanks for letting me know $user.params.tokenPayload.given_name.
+            - speech: Thanks for checking in with me $user.params.tokenPayload.given_name.
+          lastSimple:
+            variants:
+            - speech: That's all for today. Remember to check back in tomorrow.
     webhookHandler: saveJournalAndClassifyContent
   transitionToScene: actions.scene.END_CONVERSATION
 onEnter:
   staticPrompt:
     candidates:
     - promptResponse:
+        canvas:
+          continueTtsDuringTouch: true
+          enableFullScreen: true
+          url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
         firstSimple:
           variants:
           - speech: What did you get up to today?
+          - speech: What did you do today?
+        suggestions:
+        - title: Help
+        - title: Cancel
 slots:
 - commitBehavior:
     writeSessionParam: journalEntry

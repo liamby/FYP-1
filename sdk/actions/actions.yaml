@@ -1,4 +1,6 @@
 custom:
   Help: {}
+  Journaling: {}
   LogMood: {}
+  MoodLogging: {}
   actions.intent.MAIN: {}

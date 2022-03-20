@@ -2,9 +2,19 @@ onEnter:
   staticPrompt:
     candidates:
     - promptResponse:
+        canvas:
+          continueTtsDuringTouch: true
+          enableFullScreen: true
+          url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
         firstSimple:
           variants:
-          - speech: 'Remember I am a friendly assistant designed to help you log your mood. If you''re not sure what to say try asking me to log your mood or add a journal entry for today. '
+          - speech: No problem, I am a friendly assistant designed to help you log your mood.
+          - speech: Of course, I am designed to help you keep track of your mental health.
+        lastSimple:
+          variants:
+          - speech: Try asking me to log your mood or add a journal entry for today. Remember you can always say stop or help
+          - speech: If you are lost try asking to log your mood or add a journal entry for today. Remember you can always say stop or help
         suggestions:
         - title: Log my mood
         - title: Add a journal entry
+        - title: Stop

@@ -1,5 +1,5 @@
 intentEvents:
-- intent: LogMood
+- intent: MoodLogging
   transitionToScene: LogMood
 onEnter:
   webhookHandler: getViewMode

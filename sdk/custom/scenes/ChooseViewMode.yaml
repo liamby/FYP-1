@@ -11,6 +11,10 @@ slots:
       staticPrompt:
         candidates:
         - promptResponse:
+            canvas:
+              continueTtsDuringTouch: true
+              enableFullScreen: true
+              url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
             firstSimple:
               variants:
               - speech: Before we get started, what colour scheme would you like to choose?

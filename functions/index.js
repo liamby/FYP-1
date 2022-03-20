@@ -134,6 +134,22 @@ app.handle('saveJournalAndClassifyContent', async conv => {
     })
     .catch((error) => { console.log('I got an error! ${error}'); });
 
+    // getDoc(userStorage).then(async docSnap => {
+    //   let oldJournalEntry = "";
+    //   console.log("Document data:", docSnap.data());
+    //   if (typeof docSnap.data().journalEntry != 'undefined') {
+    //     oldJournalEntry = docSnap.data().journalEntry + ". ";
+    //   }
+    //   journalEntry = oldJournalEntry + journalEntry;
+    //   //Set value of journalEntry
+    //   await setDoc(userStorage, { journalEntry: journalEntry, todaysDate: todaysDate }, { merge: true })
+    //     .then(() => {
+    //       console.log('journalEntry has been written to the database');
+    //       conv.add('Okay, your journal entry has been recorded ');
+    //     })
+    //     .catch((error) => { console.log('I got an error! ${error}'); });
+    // });
+
   // Prepares a document, representing the provided text
   const document = {
     content: journalEntry,

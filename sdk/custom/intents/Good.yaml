@@ -1,4 +1,12 @@
+parameters:
+- name: mood1
+  type:
+    name: Mood
 trainingPhrases:
+- excited
+- happy
+- ($mood1 'good' auto=true)
+- well
 - sunny
 - lively
 - Joyful

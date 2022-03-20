@@ -1,5 +1,65 @@
+conditionalEvents:
+- condition: session.params.chosenMood == "Excellent" || session.params.chosenMood == "Good" || session.params.chosenMood == "Okay" || session.params.chosenMood == "Bad"  || session.params.chosenMood == "Awful"
+  handler:
+    staticPrompt:
+      candidates:
+      - promptResponse:
+          canvas:
+            continueTtsDuringTouch: true
+            data:
+            - input: $session.params.input.
+              mood: $session.params.chosenMood.
+            enableFullScreen: true
+            url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
+          firstSimple:
+            variants:
+            - speech: I have logged your mood as $session.params.chosenMood.
+            - speech: Your mood has been logged as $session.params.chosenMood.
+            - speech: I have recorded your mood for today as $session.params.chosenMood.
+    webhookHandler: saveMood
+  transitionToScene: Journal
+- condition: session.params.chosenMood != "Excellent" || session.params.chosenMood != "Good" || session.params.chosenMood != "Okay" || session.params.chosenMood != "Bad"  || session.params.chosenMood != "Awful"
+  handler:
+    staticPrompt:
+      candidates:
+      - promptResponse:
+          canvas:
+            continueTtsDuringTouch: true
+            data:
+            - input: $session.params.input.
+              mood: $session.params.chosenMood.
+            enableFullScreen: true
+            url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
+          firstSimple:
+            variants:
+            - speech: I think you feel $session.params.chosenMood.
+            - speech: It sounds like you feel $session.params.chosenMood today.
+          lastSimple:
+            variants:
+            - speech: Is this correct?
+            - speech: Did I understand correctly?
+          suggestions:
+          - title: "Yes"
+          - title: "No"
+          - title: Help
+          - title: Cancel
 intentEvents:
 - handler:
+    staticPrompt:
+      candidates:
+      - promptResponse:
+          canvas:
+            continueTtsDuringTouch: true
+            data:
+            - input: $session.params.input.
+              mood: $session.params.chosenMood.
+            enableFullScreen: true
+            url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
+          firstSimple:
+            variants:
+            - speech: I have logged your mood as $session.params.chosenMood.
+            - speech: Your mood has been logged as $session.params.chosenMood.
+            - speech: I have recorded your mood for today as $session.params.chosenMood.
     webhookHandler: saveMood
   intent: actions.intent.YES
   transitionToScene: Journal
@@ -7,18 +67,14 @@ intentEvents:
     staticPrompt:
       candidates:
       - promptResponse:
+          canvas:
+            continueTtsDuringTouch: true
+            enableFullScreen: true
+            url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
           firstSimple:
             variants:
             - speech: Ok, lets try again.
+            - speech: Oh dear, lets try again.
+            - speech: Oh, lets try that again.
   intent: actions.intent.NO
   transitionToScene: MoodLogging
-onEnter:
-  staticPrompt:
-    candidates:
-    - promptResponse:
-        firstSimple:
-          variants:
-          - speech: Is this correct?
-        suggestions:
-        - title: "Yes"
-        - title: "No"

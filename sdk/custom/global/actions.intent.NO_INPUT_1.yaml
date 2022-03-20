@@ -2,6 +2,8 @@ handler:
   staticPrompt:
     candidates:
     - promptResponse:
+        canvas:
+          url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
         firstSimple:
           variants:
           - speech: Sorry, I didn't catch that. Can you try again?

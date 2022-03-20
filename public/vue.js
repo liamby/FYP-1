@@ -67,7 +67,7 @@ var app = new Vue({
         // Day specific data.
         dayData: {
             mood: undefined,
-            journalEntry: undefined,
+            journalEntry: "You haven't added a journal entry for today yet",
             entities: [],
             date: undefined,
             day: undefined,
@@ -131,8 +131,8 @@ var app = new Vue({
             let docRef = doc(firestore, this.email, dateString);
 
             // Set user generated data.
-            this.dayData.mood = undefined;
-            this.dayData.journalEntry = undefined;
+            this.dayData.mood = "None";
+            this.dayData.journalEntry = "You haven't added a journal entry for today yet.";
             this.dayData.entities = undefined;
 
             onSnapshot(docRef, (doc) => {
@@ -176,7 +176,8 @@ var app = new Vue({
                         if (docSnap.exists()) {
                             console.log("Document data:", docSnap.data());
                             if (typeof docSnap.data().mood != 'undefined') mood = docSnap.data().mood;
-                            if (typeof docSnap.data().journalEntry != 'undefined') journalEntry = docSnap.data().journalEntry;
+                            if (typeof docSnap.data().journalEntry != 'undefined'){ journalEntry = docSnap.data().journalEntry;
+                            }else {journalEntry = "You haven't added a journal entry for today yet";}
                             if (typeof docSnap.data().entities != 'undefined') entities = docSnap.data().entities;
                             let dayObj = {
                                 mood: mood,
