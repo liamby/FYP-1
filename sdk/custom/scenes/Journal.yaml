@@ -6,7 +6,7 @@ intentEvents:
           canvas:
             continueTtsDuringTouch: true
             enableFullScreen: true
-            url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
+            url: https://fyp-actionsconsole.firebaseapp.com/
           firstSimple:
             variants:
             - speech: Sure.
@@ -20,7 +20,7 @@ intentEvents:
           canvas:
             continueTtsDuringTouch: true
             enableFullScreen: true
-            url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
+            url: https://fyp-actionsconsole.firebaseapp.com/
           firstSimple:
             variants:
             - speech: No problem. Thats everything done for today see you again tomorrow.
@@ -35,7 +35,7 @@ onEnter:
         canvas:
           continueTtsDuringTouch: true
           enableFullScreen: true
-          url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
+          url: https://fyp-actionsconsole.firebaseapp.com/
         firstSimple:
           variants:
           - speech: Would you like to add a journal entry for today?

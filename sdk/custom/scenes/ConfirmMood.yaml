@@ -10,7 +10,7 @@ conditionalEvents:
             - input: $session.params.input.
               mood: $session.params.chosenMood.
             enableFullScreen: true
-            url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
+            url: https://fyp-actionsconsole.firebaseapp.com/
           firstSimple:
             variants:
             - speech: I have logged your mood as $session.params.chosenMood.
@@ -29,7 +29,7 @@ conditionalEvents:
             - input: $session.params.input.
               mood: $session.params.chosenMood.
             enableFullScreen: true
-            url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
+            url: https://fyp-actionsconsole.firebaseapp.com/
           firstSimple:
             variants:
             - speech: I think you feel $session.params.chosenMood.
@@ -54,7 +54,7 @@ intentEvents:
             - input: $session.params.input.
               mood: $session.params.chosenMood.
             enableFullScreen: true
-            url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
+            url: https://fyp-actionsconsole.firebaseapp.com/
           firstSimple:
             variants:
             - speech: I have logged your mood as $session.params.chosenMood.
@@ -70,7 +70,7 @@ intentEvents:
           canvas:
             continueTtsDuringTouch: true
             enableFullScreen: true
-            url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
+            url: https://fyp-actionsconsole.firebaseapp.com/
           firstSimple:
             variants:
             - speech: Ok, lets try again.

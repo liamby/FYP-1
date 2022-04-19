@@ -6,7 +6,7 @@ intentEvents:
           canvas:
             continueTtsDuringTouch: true
             enableFullScreen: true
-            url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
+            url: https://fyp-actionsconsole.firebaseapp.com/
           firstSimple:
             variants:
             - speech: OK
@@ -21,7 +21,7 @@ intentEvents:
           canvas:
             continueTtsDuringTouch: true
             enableFullScreen: true
-            url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
+            url: https://fyp-actionsconsole.firebaseapp.com/
           firstSimple:
             variants:
             - speech: OK, Great
@@ -34,7 +34,7 @@ onEnter:
         canvas:
           continueTtsDuringTouch: true
           enableFullScreen: true
-          url: https://c25c-2a02-8084-60a0-9a00-b8f2-20b-9edd-f19b.ngrok.io/public/
+          url: https://fyp-actionsconsole.firebaseapp.com/
         firstSimple:
           variants:
           - speech: ' Hi $user.params.tokenPayload.given_name, you can record your mood and keep track of trends, just by letting me know how you are feeling.'
